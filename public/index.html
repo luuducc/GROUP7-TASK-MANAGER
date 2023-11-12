@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TASK_MANAGER_GROUP7</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200i,300,400&amp;display=swap" rel="stylesheet">
+</head>
+<body>
+ 
+  <h3>GROUP7</h3>
+  <h4>TASK MANAGER PROJECT</h4>
+  <section id="Task">
+    Id<input type="text" id="id" class="input"><br>
+    Title<input type="text" id="title" class="input"><br>
+    Body<input type="text" id="body" class="input"><br>
+    Image<input type="text" id="image" class="input"><br>
+    Completed<input type="text" id="completed" class="input"><br>
+  </section>
+
+  <section id="button-list">
+    <button id="get-btn" class="button">SHOW ALL TASK</button>
+    <button id="create-btn" class="button">INSERT TASK</button>
+    <button id="update-btn" class="button">UPDATE TASK BY ID</button>
+    <button id="delete-btn" class="button">DELETE TASK BY ID</button>
+    <button id="search-btn" class="button">SEARCH TASK BY TITLE</button>
+  </section>
+  <p>Status: 
+    <span id="err-message"></span>
+    <span id="success-message"></span>
+  </p>
+
+  <section id="output-data">Your data is here</section>
+  <script src="logic.js"></script>
+
+</body>
+</html>

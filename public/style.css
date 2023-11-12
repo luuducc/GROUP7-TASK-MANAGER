@@ -1,0 +1,32 @@
+body {
+  background-color: #45567d;
+  color: #f0f0f0;
+  font-family: 'Poppins', sans-serif;
+}
+.button {
+  background-color: #303841;
+  font-family: 'Poppins', sans-serif;
+  color: #f0f0f0;
+  border-radius: 5px;
+  padding: 5px;
+  transition: background-color 0.4s;
+}
+.button:hover {
+  background-color: #be3144;
+}
+
+.input {
+  margin-left: 5px;
+  border: #303841 solid 2px;
+  border-radius: 5px;
+  font-family: 'Poppins', sans-serif;
+}
+#output-data {
+  background-color: #303841;
+}
+#err-message {
+  color: lightcoral
+}
+#success-message {
+  color: lightgreen
+}
