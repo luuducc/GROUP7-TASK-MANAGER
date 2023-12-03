@@ -10,8 +10,8 @@ const {
 
 const router = express.Router();
 
-router.route("/home").get(getAllTasks).post(createTask); 
-router.route("/:title").get(getTaskByTitle)
-router.route("/:id").put(updateTask).delete(deleteTask);
+router.route("/").get(getAllTasks).post(createTask).delete(deleteAllTask); 
+router.route("/title/:title").get(getTaskByTitle)
+router.route("/:id").get(getTaskById).put(updateTask).delete(deleteTask);
 
 module.exports = router;
