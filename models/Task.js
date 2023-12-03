@@ -6,13 +6,21 @@ const Schema = mongoose.Schema;
 // CRUD
 // từ dữ liệu json sẽ xây dựng lên giao diện,
 const taskSchema = new Schema({
-  title: String,
-  body: String,
-  image: String,
+  title: {
+    type: String,
+    required: true
+  },
+  body: {
+    type: String,
+    required: true
+  },
+  image: {
+    type: String
+  },
   createdAt: {
     type: Date,
     default: Date.now,
-  },
+  }, 
   completed: {
     type: Boolean,
     default: false,
