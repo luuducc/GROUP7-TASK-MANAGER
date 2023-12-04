@@ -4,6 +4,10 @@ exports.getAllTasks = async () => {
   return await TaskModel.find();
 };
 
+exports.deleteAllTask = async () => {
+  return await TaskModel.deleteMany({});
+};
+
 exports.createTask = async (task) => {
   return await TaskModel.create(task);
 };
@@ -23,3 +27,5 @@ exports.updateTask = async (id, task) => {
 exports.deleteTask = async (id) => {
   return await TaskModel.findByIdAndDelete(id);
 };
+
+
