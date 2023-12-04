@@ -2,15 +2,17 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const taskRouter = require("./routes/TaskRoutes");
+const cors = require("cors");  // Import the cors middleware
 require('dotenv').config()
+
+// Enable CORS for all routes
+app.use(cors());
 
 //middleware
 app.use(express.json()); 
 app.use("/api/tasks", taskRouter); //
 app.use(express.static('./public'))
-
-
-
+  
 
 const start = async() => {
   try {
