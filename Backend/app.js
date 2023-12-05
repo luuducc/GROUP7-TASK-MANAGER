@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const taskRouter = require("./routes/TaskRoutes");
+const authRoute = require("./routes/auth");
+const userRoute = require("./routes/user");
 const cron = require("node-cron")
 const { addClient, removeClient, sendSSEMessage } = require("./utils")
 const Task = require('./models/Task');
@@ -13,9 +15,12 @@ app.use(cors());
 
 //middleware
 app.use(express.json()); 
-app.use("/api/tasks", taskRouter); //
 app.use(express.static('./public'))
   
+//Routes
+app.use("/api/tasks", taskRouter); //
+app.use("/auth", authRoute);
+app.use("/user", userRoute);
 
 const start = async() => {
   try {
