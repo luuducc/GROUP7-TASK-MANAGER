@@ -4,6 +4,8 @@ import axios from 'axios';
 import './TaskList.css';
 import AddTaskForm from './AddTaskForm';
 import EditTaskForm from './EditTaskForm';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -11,7 +13,7 @@ const TaskList = () => {
   const [editTask, setEditTask] = useState(null);
   const [isAddPopupOpen, setAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setEditPopupOpen] = useState(false);
-  const [selectedTaskId, setSelectedTaskId] = useState(null);
+  // const [selectedTaskId, setSelectedTaskId] = useState(null);
 
 
   useEffect(() => {
@@ -34,8 +36,11 @@ const TaskList = () => {
       setTasks([...tasks, response.data.data]);
       setNewTask({ title: '', body: '', image: '' });
       setAddPopupOpen(false);
+
+      toast.success('Task added successfully!');
     } catch (error) {
       console.error('Error adding task:', error.message);
+      toast.error('Error adding task');
     }
   };
 
@@ -45,8 +50,11 @@ const TaskList = () => {
       setTasks(tasks.map((task) => (task._id === editTask._id ? response.data.data : task)));
       setEditTask(null);
       setEditPopupOpen(false);
+
+      toast.success('Task edited successfully!');
     } catch (error) {
       console.error('Error editing task:', error.message);
+      toast.error('Error editing task');
     }
   };
   
@@ -55,13 +63,17 @@ const TaskList = () => {
     try {
       await axios.delete(`http://localhost:3000/api/tasks/${taskId}`);
       setTasks(tasks.filter((task) => task._id !== taskId));
+
+      toast.success('Task deleted successfully!');
     } catch (error) {
       console.error('Error deleting task:', error.message);
+      toast.error('Error deleting task');
     }
   };
 
   return (
     <div className="task-list-container">
+      <ToastContainer />
       <h2>Task List</h2>
       <button onClick={() => setAddPopupOpen(true)}>Thêm</button>
       <ul className="task-list">
