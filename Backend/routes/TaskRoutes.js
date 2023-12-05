@@ -6,7 +6,7 @@ const {
   updateTask,
   deleteTask,
   getTaskByTitle, 
-  deleteAllTask
+  deleteAllTask,
 } = require("../controllers/TaskController");
 
 const router = express.Router();
