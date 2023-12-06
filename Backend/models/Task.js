@@ -21,6 +21,10 @@ const taskSchema = new Schema({
     type: Date,
     default: Date.now,
   }, 
+  expiredDate: {
+    type: Date,
+    required: true
+  },
   completed: {
     type: Boolean,
     default: false,
