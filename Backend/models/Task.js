@@ -25,6 +25,18 @@ const taskSchema = new Schema({
     type: Date,
     required: true
   },
+  customNoti: {
+    value: {
+      type: Number,
+      required: true
+    },
+    time: {
+      type: String,
+      enum: ['day', 'hour', 'minute'],
+      required: true
+    }
+    
+  },
   completed: {
     type: Boolean,
     default: false,

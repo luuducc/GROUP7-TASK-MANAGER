@@ -6,10 +6,10 @@ function App() {
   useEffect(() => {
     const eventSource = new EventSource("http://localhost:3000/events ") // SSE endpoint
     eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data)
-      // const data = event.data
-      // process data from server SSE
+      const data = JSON.parse(event.data) 
       console.log('Received data from SSE:', data)
+      // process data from server SSE
+      // ....
     }
 
     eventSource.onerror = (error) => {

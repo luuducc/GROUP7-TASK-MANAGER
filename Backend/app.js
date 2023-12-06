@@ -32,10 +32,6 @@ const start = async() => {
       res.setHeader('Content-Type', 'text/event-stream')
       res.setHeader('Cache-Control', 'no-cache')
       res.setHeader('Connection', 'keep-alive')
-      
-      // const intervalId = setInterval(() => {
-      //   res.write(`data: Hello from server ${new Date().toLocaleTimeString()}\n\n`);
-      // }, 5000);
 
       const clientId = Date.now()
       res.flushHeaders()
@@ -48,42 +44,51 @@ const start = async() => {
     })
 
     // Start cron job
-    cron.schedule("* * * * *", async () => { // run every minute
+    cron.schedule("*/5 * * * *", async () => { // run every 5 minutes
       try {
         const tasks = await Task.find()
         const today = new Date();
         tasks.forEach(task => {
-          const expiredDate = task.expiredDate;
+          const { expiredDate, customNoti } = task;
+          const { value: timeUntilExpiration } = customNoti
           const timeDiff = expiredDate.getTime() - today.getTime();
           const minutesUntilExpiration = timeDiff / (1000 * 60)
           const hoursUntilExpiration = minutesUntilExpiration / 60
           const daysUntilExpiration = Math.ceil(timeDiff / (1000*3600*24));
 
-          // -- Enable this when deploying
-          if(daysUntilExpiration >=0 && daysUntilExpiration <= 3) {
-            sendSSEMessage({
-              id: task._id, 
-              name: task.title, 
-              minutesUntilExpiration,
-              hoursUntilExpiration,
-              daysUntilExpiration
-            })
-            if(minutesUntilExpiration <= 15) { // warning when there are less than 15 minutes left
-              sendSSEMessage({
-                WARNING: "This task is nearing its deadline!!!",
-                taskName: task.title,
-                timeLeft: minutesUntilExpiration
-              })
-            }
-            console.log({
-              id: task._id, name: task.title, 
-              minutesUntilExpiration, 
-              hoursUntilExpiration,     
-              daysUntilExpiration,   
-            })
-            // other announcements here
-          }
+          console.log({ daysUntilExpiration, customNoti, timeUntilExpiration })
 
+          switch(customNoti.time) {
+            case "day":   
+              if(daysUntilExpiration <= timeUntilExpiration) {
+                sendSSEMessage({
+                  name: task.title,
+                  daysUntilExpiration,
+                  message: `the time left is ${daysUntilExpiration} day`
+                })
+              }
+              break
+            case "hour" :
+              if(hoursUntilExpiration <= timeUntilExpiration) {
+                sendSSEMessage({
+                  name: task.title,
+                  hoursUntilExpiration,
+                  message: `the time left is ${hoursUntilExpiration} hours`
+                })
+              }
+              break
+            case "minute" :
+              if(hoursUntilExpiration <= timeUntilExpiration) {
+                sendSSEMessage({
+                  name: task.title,
+                  minutesUntilExpiration,
+                  message: `the time left is ${minutesUntilExpiration} minute`
+                })
+              }
+              break
+            default: 
+              break
+          }
           
         })   
       } catch (error) {
