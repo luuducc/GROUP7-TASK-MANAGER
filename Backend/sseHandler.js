@@ -33,7 +33,7 @@ const setupCronJob = () => {
         const hoursUntilExpiration = minutesUntilExpiration / 60
         const daysUntilExpiration = Math.ceil(timeDiff / (1000*3600*24));
 
-        console.log({ daysUntilExpiration, customNoti, timeUntilExpiration })
+        // console.log({ daysUntilExpiration, customNoti, timeUntilExpiration })
 
         switch(customNoti.time) {
           case "day":   
