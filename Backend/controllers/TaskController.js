@@ -21,9 +21,11 @@ exports.deleteAllTask = async (req, res) => {
 
 exports.createTask = async (req, res) => {
   try {
+    console.log("check---" , req.body)
     const task = await taskService.createTask(req.body);
     res.json({ status: "success" , data: task });
   } catch (err) {
+    console.log(err.message)
     res.status(500).json({ error: err.message });
   }
 };

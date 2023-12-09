@@ -1,6 +1,8 @@
 // EditTaskForm.js
 import React from 'react';
 
+
+
 const EditTaskForm = ({ editTask, setEditTask, handleEditTask, onClose }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,7 +22,7 @@ const EditTaskForm = ({ editTask, setEditTask, handleEditTask, onClose }) => {
       <div className="popup-content">
         <h3>Sửa Task</h3>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="editTitle">Tiêu đề:</label>
+          <label htmlFor="editTitle">Title:</label>
           <input
             type="text"
             id="editTitle"
@@ -29,7 +31,7 @@ const EditTaskForm = ({ editTask, setEditTask, handleEditTask, onClose }) => {
             onChange={handleChange}
           />
 
-          <label htmlFor="editBody">Nội dung:</label>
+          <label htmlFor="editBody">Body:</label>
           <textarea
             id="editBody"
             name="body"
@@ -37,7 +39,18 @@ const EditTaskForm = ({ editTask, setEditTask, handleEditTask, onClose }) => {
             onChange={handleChange}
           ></textarea>
 
-          <label htmlFor="editImage">Ảnh:</label>
+          <label htmlFor="editBody">Expired Date:</label>
+          <label>
+            <input
+              id="editExpiredDate"
+              name="expiredDate"
+              type="datetime-local"
+              value={editTask.expiredDate}
+              onChange={handleChange}
+            />
+          </label>
+
+          <label htmlFor="editImage">Image:</label>
           <input
             type="text"
             id="editImage"
