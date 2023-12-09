@@ -6,6 +6,8 @@ const Schema = mongoose.Schema;
 // CRUD
 // từ dữ liệu json sẽ xây dựng lên giao diện,
 const taskSchema = new Schema({
+  // _id: Schema.Types.ObjectId,
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
   title: {
     type: String,
     required: true
@@ -46,7 +48,7 @@ const taskSchema = new Schema({
         {
           validator: function(val) {
             if(this.customNoti.time === 'minute') 
-              return val > 5
+              return val >= 5
           },
           message: 'the minimum time is 5 minute'
         }
