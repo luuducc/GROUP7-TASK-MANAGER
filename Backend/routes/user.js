@@ -7,7 +7,7 @@ const {
 
 const router = require("express").Router();
 //GET ALL USERS
-router.get("/", verifyToken, userController.getAllUsers);
+router.get("/getAll", verifyToken, userController.getAllUsers);
 
 //DELETE USER
 router.delete("/:id", verifyTokenAndUserAuthorization, userController.deleteUser);
