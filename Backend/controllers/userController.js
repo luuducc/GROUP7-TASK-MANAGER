@@ -20,6 +20,29 @@ const userController = {
       res.status(500).json(err);
     }
   },
+
+  // UPDATE USER INFOR
+  updateUser: async (req, res) => {
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        req.params.id,
+        {
+          email: req.body.email,
+          password: req.body.password,
+        },
+        { new: true }
+      );
+
+      if (!updatedUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      res.status(200).json(updatedUser);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
 };
 
 module.exports = userController;
