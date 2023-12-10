@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState({ title: '', body: '', image: '',expiredDate: '' });
+  const [newTask, setNewTask] = useState({ title: '', body: '', image: '' });
   const [editTask, setEditTask] = useState(null);
   const [isAddPopupOpen, setAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setEditPopupOpen] = useState(false);
@@ -34,7 +34,7 @@ const TaskList = () => {
     try {
       const response = await axios.post('http://localhost:3000/api/tasks', newTask);
       setTasks([...tasks, response.data.data]);
-      setNewTask({ title: '', body: '', image: '',expiredDate: ''});
+      setNewTask({ title: '', body: '', image: '' });
       setAddPopupOpen(false);
 
       toast.success('Task added successfully!');
@@ -81,7 +81,6 @@ const TaskList = () => {
           <li key={task._id} className="task-item">
             <strong>{task.title}</strong>
             <p>{task.body}</p>
-            <p>expiredDate: {new Date(task.expiredDate).toLocaleString()}</p>
             <p>Created At: {new Date(task.createdAt).toLocaleString()}</p>
             <p>Completed: {task.completed ? 'Yes' : 'No'}</p>
             {/* Thay đổi button "Sửa" để gọi hàm mở form sửa */}

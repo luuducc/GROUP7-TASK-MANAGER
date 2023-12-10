@@ -25,14 +25,6 @@ const AddTaskForm = ({ newTask, setNewTask, handleAddTask, onClose }) => {
         </label>
         <br />
         <label>
-          Expired Date:
-          <input
-            type="datetime-local"
-            value={newTask.expiredDate}
-            onChange={(e) => setNewTask({ ...newTask, expiredDate: e.target.value })}
-          />
-        </label>
-        <label>
           Image URL:
           <input
             type="text"
