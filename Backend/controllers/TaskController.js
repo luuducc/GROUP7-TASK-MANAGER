@@ -45,7 +45,25 @@ exports.getTaskById = async (req, res) => {
 exports.getTaskByTitle = async (req, res) => {
   try {
     const task = await taskService.getTaskByTitle(req.params.title);
-    res.json({ status: "success", data: task });
+    if(task.length > 0) {
+      res.json({ status: "success", data: task });
+    } else {
+      return res.status(404).json({ msg: `No task with title ${req.params.title}`})
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getTaskByUser = async (req, res) => { 
+  console.log(req.header('user'))
+  try {
+    const task = await taskService.getTaskByUser(req.params.user);
+    if(task.length > 0) {
+      res.json({ status: "success", data: task });
+    } else {
+      return res.status(404).json({ msg: `No task with user ${req.params.user}`})
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
