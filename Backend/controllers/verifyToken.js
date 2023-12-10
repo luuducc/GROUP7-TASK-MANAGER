@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const verifyToken = (req, res, next) => {
   //ACCESS TOKEN FROM HEADER, REFRESH TOKEN FROM COOKIE
   const token = req.headers.token;
-  const refreshToken = req.cookies.refreshToken;
+  // const refreshToken = req.cookies.refreshToken;
   if (token) {
     const accessToken = token.split(" ")[1];
     jwt.verify(accessToken, process.env.ACCESS_KEY, (err, user) => {
@@ -28,6 +28,16 @@ const verifyTokenAndUserAuthorization = (req, res, next) => {
   });
 };
 
+const verifyTokenAndUser = (req, res, next) => {
+  verifyToken(req, res, () => {
+    if (req.user.id === req.params.id) {
+      next();
+    } else {
+      res.status(403).json("You're not allowed to do that!");
+    }
+  });
+}
+
 const verifyTokenAndAdmin = (req, res, next) => {
   verifyToken(req, res, () => {
     if (req.user.isAdmin) {
@@ -42,4 +52,5 @@ module.exports = {
   verifyToken,
   verifyTokenAndUserAuthorization,
   verifyTokenAndAdmin,
+  verifyTokenAndUser
 };
