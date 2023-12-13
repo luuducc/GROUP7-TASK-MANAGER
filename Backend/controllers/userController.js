@@ -31,7 +31,7 @@ const userController = {
       const updatedUser = await User.findByIdAndUpdate(
         req.params.id,
         {
-          email: req.body.email,
+          username: req.body.username,
           password: hashed,
         },
         { new: true }
