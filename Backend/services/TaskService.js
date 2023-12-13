@@ -15,8 +15,13 @@ exports.getTaskById = async (id) => {
   return await TaskModel.findById(id);
 };
 exports.getTaskByTitle = async (title) => {
-  return await TaskModel.find({title: title})
-}
+  return await TaskModel.find({ title })
+};
+
+exports.getTaskByUser = async (user) => {
+  return await TaskModel.find({ user })
+};
+
 exports.updateTask = async (id, task) => {
   return await TaskModel.findByIdAndUpdate(id, task, {
     new: true, // return the new item
