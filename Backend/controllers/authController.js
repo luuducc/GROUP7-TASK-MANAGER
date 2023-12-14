@@ -33,7 +33,7 @@ const authController = {
         isAdmin: user.isAdmin,
       },
       process.env.ACCESS_KEY,
-      { expiresIn: "30s" }
+      { expiresIn: "10m" }
     );
   },
 
@@ -51,7 +51,7 @@ const authController = {
   //LOGIN
   loginUser: async (req, res) => {
     try {
-      const user = await User.findOne({ username: req.body.username });
+      const user = await User.findOne({ email: req.body.email });
       if (!user) {
         res.status(404).json("Incorrect username");
       }

@@ -32,6 +32,28 @@ const AddTaskForm = ({ newTask, setNewTask, handleAddTask, onClose }) => {
             onChange={(e) => setNewTask({ ...newTask, expiredDate: e.target.value })}
           />
         </label>
+
+        <label>
+          Custom Notification Value:
+          <input
+            type="number"
+            value={newTask.customNoti.value}
+            onChange={(e) => setNewTask({ ...newTask, customNoti: { ...newTask.customNoti, value: e.target.value } })}
+          />
+        </label>
+
+        <label>
+          Custom Notification Time:
+          <select
+            value={newTask.customNoti.time}
+            onChange={(e) => setNewTask({ ...newTask, customNoti: { ...newTask.customNoti, time: e.target.value } })}
+          >
+            <option value="day">Day</option>
+            <option value="hour">Hour</option>
+            <option value="minute">Minute</option>
+          </select>
+        </label>
+
         <label>
           Image URL:
           <input
@@ -41,8 +63,18 @@ const AddTaskForm = ({ newTask, setNewTask, handleAddTask, onClose }) => {
           />
         </label>
         <br />
-        <button onClick={handleAddTask}>Thêm</button> 
-        <button onClick={onClose}>Đóng</button>
+        <button 
+        style={{
+          backgroundColor: '#4caf50',
+          color: 'white',
+        }}
+        onClick={handleAddTask}>Thêm</button> 
+        <button 
+        style={{
+          backgroundColor: '#4caf50',
+          color: 'white',
+        }}
+        onClick={onClose}>Đóng</button>
       </div>
     </div>
   );
