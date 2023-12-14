@@ -2,6 +2,7 @@ const TaskModel = require("../models/Task");
 
 exports.getAllTasks = async () => {
   return await TaskModel.find()
+    .sort('-createdAt')
     .exec()
     .then(tasks => //sort properties in custom order
       tasks.map(({ title, user, body, completed, customNoti, expiredDate, createdAt }) => ({ 
