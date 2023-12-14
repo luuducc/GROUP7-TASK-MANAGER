@@ -1,0 +1,59 @@
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    color:#333;
+  }
+  
+.profile-container {
+    width: 832px;
+    margin: 50px 0;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-items: center;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    flex-direction: column; 
+}
+
+.profile-container h2 {
+    text-align: center;
+    color: #333;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+    object-fit: contain;
+    transition: transform 0.3s ease-in-out;
+}
+
+.avatar:hover {
+    transform: scale(1.1); /* Phóng to khi hover */
+}
+
+.user-name {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.user-info p {
+    line-height: 30px;
+}
+
+Button:hover {
+    color: white;
+}
+
+Box {
+    margin-top: 10px;
+}

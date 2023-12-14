@@ -57,8 +57,8 @@ const taskSchema = new Schema({
     time: {
       type: String,
       enum: ['day', 'hour', 'minute'],
-      required: true, 
-    }  
+      required: true,
+    }
   },
   completed: {
     type: Boolean,

@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.static('./public'))
   
 //Routes
-app.use("/api/tasks", taskRouter); //
+app.use("/api/tasks", taskRouter); 
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
 

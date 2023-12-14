@@ -32,9 +32,10 @@ exports.getTaskByUser = async (user) => {
 };
 
 exports.updateTask = async (id, task) => {
+  console.log("checkkk", task)
   return await TaskModel.findByIdAndUpdate(id, task, {
     new: true, // return the new item
-    runValidators: true
+    // runValidators: true
   });
 };
 
