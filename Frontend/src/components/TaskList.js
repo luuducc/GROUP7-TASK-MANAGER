@@ -9,7 +9,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState({ title: '', body: '', image: '',expiredDate: '' });
+  const [newTask, setNewTask] = useState({ 
+    title: '',
+    body: '',
+    image: '',
+    expiredDate: '',
+    customNoti: { value: null, time: 'day' }
+  });
   const [editTask, setEditTask] = useState(null);
   const [isAddPopupOpen, setAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setEditPopupOpen] = useState(false);
@@ -34,7 +40,7 @@ const TaskList = () => {
     try {
       const response = await axios.post('http://localhost:3000/api/tasks', newTask);
       setTasks([...tasks, response.data.data]);
-      setNewTask({ title: '', body: '', image: '',expiredDate: ''});
+      setNewTask({ title: '', body: '', image: '',expiredDate: '', customNoti: { value: null, time: '' } });
       setAddPopupOpen(false);
 
       toast.success('Task added successfully!');
@@ -75,25 +81,40 @@ const TaskList = () => {
     <div className="task-list-container">
       <ToastContainer />
       <h2>Task List</h2>
-      <button onClick={() => setAddPopupOpen(true)}>Thêm</button>
+      <button
+      style={{
+        backgroundColor: '#4caf50',
+        color: 'white',
+      }}
+      onClick={() => setAddPopupOpen(true)}>Thêm</button>
       <ul className="task-list">
         {tasks.map((task) => (
           <li key={task._id} className="task-item">
             <strong>{task.title}</strong>
-            <p>{task.body}</p>
+            <h1>{task.body}</h1>
             <p>expiredDate: {new Date(task.expiredDate).toLocaleString()}</p>
             <p>Created At: {new Date(task.createdAt).toLocaleString()}</p>
+            <p>Custom Notification Value: {task.customNoti?.value}</p>
+            <p>Custom Notification Time: {task.customNoti?.time}</p>
             <p>Completed: {task.completed ? 'Yes' : 'No'}</p>
-            {/* Thay đổi button "Sửa" để gọi hàm mở form sửa */}
-            <button onClick={() => {
+
+            <button
+            style={{
+              backgroundColor: '#4caf50',
+              color: 'white',
+            }}
+            onClick={() => {
               const taskId = task._id;
               setEditTask(tasks.find(task => task._id === taskId));
               setEditPopupOpen(true);
             }}>Sửa</button>
 
-
-
-            <button onClick={() => handleDeleteTask(task._id)}>Xoá</button>
+            <button 
+            style={{
+              backgroundColor: '#4caf50',
+              color: 'white',
+            }}
+            onClick={() => handleDeleteTask(task._id)}>Xoá</button>
           </li>
         ))}
       </ul>
@@ -117,7 +138,7 @@ const TaskList = () => {
           onClose={() => setEditPopupOpen(false)}
         />
       )}
-      {/* {isEditPopupOpen && console.log(editTask)} */}
+
     </div>
   );
 };

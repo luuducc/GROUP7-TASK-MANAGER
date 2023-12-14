@@ -21,7 +21,7 @@ exports.deleteAllTask = async (req, res) => {
 
 exports.createTask = async (req, res) => {
   try {
-    console.log("check---" , req.body)
+    console.log("check create task: " , req.body);
     const task = await taskService.createTask(req.body);
     res.json({ status: "success" , data: task });
   } catch (err) {
@@ -71,10 +71,15 @@ exports.getTaskByUser = async (req, res) => {
 
 exports.updateTask = async (req, res) => {
   try {
+    console.log("Task ID to update:", req.params.id);
+    console.log("Updated task data:", req.body);
+
     const task = await taskService.updateTask(req.params.id, req.body);
+
     res.json({ status: "success", data: task });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.log(err.message);
+    res.status(500).json({ error: err.message }); 
   }
 };
 

@@ -6,11 +6,25 @@ import React from 'react';
 const EditTaskForm = ({ editTask, setEditTask, handleEditTask, onClose }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditTask((prevEditTask) => ({
-      ...prevEditTask,
-      [name]: value,
-    }));
+  
+    // Handle nested properties
+    if (name.includes("customNoti")) {
+      const [parent, child] = name.split(".");
+      setEditTask((prevEditTask) => ({
+        ...prevEditTask,
+        [parent]: {
+          ...prevEditTask[parent],
+          [child]: value,
+        },
+      }));
+    } else {
+      setEditTask((prevEditTask) => ({
+        ...prevEditTask,
+        [name]: value,
+      }));
+    }
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,6 +63,27 @@ const EditTaskForm = ({ editTask, setEditTask, handleEditTask, onClose }) => {
               onChange={handleChange}
             />
           </label>
+
+          <label htmlFor="editCustomNotiValue">Custom Notification Value:</label>
+          <input
+            type="number"
+            id="editCustomNotiValue"
+            name="customNoti.value"
+            value={editTask.customNoti.value}
+            onChange={handleChange}
+          />
+
+          <label htmlFor="editCustomNotiTime">Custom Notification Time:</label>
+          <select
+            id="editCustomNotiTime"
+            name="customNoti.time"
+            value={editTask.customNoti.time}
+            onChange={handleChange}
+          >
+            <option value="day">Day</option>
+            <option value="hour">Hour</option>
+            <option value="minute">Minute</option>
+          </select>
 
           <label htmlFor="editImage">Image:</label>
           <input
