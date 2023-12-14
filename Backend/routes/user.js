@@ -1,10 +1,20 @@
 const userController = require("../controllers/userController");
 
+const {
+  verifyToken,
+  verifyTokenAndAdmin,
+  verifyTokenAndUserAuthorization,
+  verifyTokenAndUser,
+} = require("../controllers/verifyToken");
+
 const router = require("express").Router();
 //GET ALL USERS
-router.get("/getAll", userController.getAllUsers);
+router.get("/getAll", verifyToken, userController.getAllUsers);
 
 //DELETE USER
-router.delete("/:id", userController.deleteUser);
+router.delete("/delete/:id", verifyTokenAndUserAuthorization, userController.deleteUser);
+
+//UPDATE USER INFOR
+router.put("/update/:id", verifyTokenAndUser, userController.updateUser);
 
 module.exports = router;

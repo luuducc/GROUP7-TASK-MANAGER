@@ -26,45 +26,48 @@ const setupCronJob = () => {
       const tasks = await Task.find()
       const today = new Date();
       tasks.forEach(task => {
-        const { expiredDate, customNoti } = task;
-        const { value: timeUntilExpiration } = customNoti
-        const timeDiff = expiredDate.getTime() - today.getTime();
-        const minutesUntilExpiration = timeDiff / (1000 * 60)
-        const hoursUntilExpiration = minutesUntilExpiration / 60
-        const daysUntilExpiration = Math.ceil(timeDiff / (1000*3600*24));
+        const { completed } = task
+        
+        if(!completed) { // if job incomplete
+          console.log("this jos is incomplete:", task.title)
+          const { expiredDate, customNoti } = task;
+          const { value: timeUntilExpiration } = customNoti
+          const timeDiff = expiredDate.getTime() - today.getTime();
+          const minutesUntilExpiration = timeDiff / (1000 * 60)
+          const hoursUntilExpiration = minutesUntilExpiration / 60
+          const daysUntilExpiration = Math.ceil(timeDiff / (1000*3600*24));
 
-        // console.log({ daysUntilExpiration, customNoti, timeUntilExpiration })
-
-        switch(customNoti.time) {
-          case "day":   
-            if(daysUntilExpiration <= timeUntilExpiration) {
-              sendSSEMessage({
-                name: task.title,
-                daysUntilExpiration,
-                message: `the time left is ${daysUntilExpiration} day`
-              })
-            }
-            break
-          case "hour" :
-            if(hoursUntilExpiration <= timeUntilExpiration) {
-              sendSSEMessage({
-                name: task.title,
-                hoursUntilExpiration,
-                message: `the time left is ${hoursUntilExpiration} hours`
-              })
-            }
-            break
-          case "minute" :
-            if(hoursUntilExpiration <= timeUntilExpiration) {
-              sendSSEMessage({
-                name: task.title,
-                minutesUntilExpiration,
-                message: `the time left is ${minutesUntilExpiration} minute`
-              })
-            }
-            break
-          default: 
-            break
+          switch(customNoti.time) {
+            case "day":   
+              if(daysUntilExpiration <= timeUntilExpiration) {
+                sendSSEMessage({
+                  name: task.title,
+                  daysUntilExpiration,
+                  message: `the time left is ${daysUntilExpiration} day`
+                })
+              }
+              break
+            case "hour" :
+              if(hoursUntilExpiration <= timeUntilExpiration) {
+                sendSSEMessage({
+                  name: task.title,
+                  hoursUntilExpiration,
+                  message: `the time left is ${hoursUntilExpiration} hours`
+                })
+              }
+              break
+            case "minute" :
+              if(hoursUntilExpiration <= timeUntilExpiration) {
+                sendSSEMessage({
+                  name: task.title,
+                  minutesUntilExpiration,
+                  message: `the time left is ${minutesUntilExpiration} minute`
+                })
+              }
+              break
+            default: 
+              break
+          } 
         }
         
       })   
