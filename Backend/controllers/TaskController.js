@@ -3,7 +3,7 @@ const taskService = require("../services/TaskService");
 exports.getAllTasks = async (req, res) => {
   try {
     const tasks = await taskService.getAllTasks();
-    res.json({ status: "success", data: tasks });
+    res.json({ status: "success", count: tasks.length, data: tasks });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -21,7 +21,6 @@ exports.deleteAllTask = async (req, res) => {
 
 exports.createTask = async (req, res) => {
   try {
-    console.log("check---" , req.body)
     const task = await taskService.createTask(req.body);
     res.json({ status: "success" , data: task });
   } catch (err) {
