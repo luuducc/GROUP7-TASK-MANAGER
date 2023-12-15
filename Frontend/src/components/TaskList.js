@@ -76,6 +76,18 @@ const TaskList = () => {
     }
   };
 
+  const handleDeleteAllTasks = async () => {
+    try {
+      await axios.delete(`http://localhost:3000/api/tasks`);
+      setTasks([]);
+      toast.success('All tasks deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting all tasks:', error.message);
+      toast.error('Error deleting all tasks');
+    }
+  };
+
+
   const handleCompleteTask = async (taskId) => {
     try {
       const updatedCompletedStatus = !tasks.find((task) => task._id === taskId)?.completed;
@@ -109,13 +121,7 @@ const TaskList = () => {
     <div className="task-list-container">
       <ToastContainer />
       <h2>Task List</h2>
-      <div>
-        <input
-          type="text"
-          placeholder="Search by title..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+      <div className='search-task'>
         <button
           style={{
             backgroundColor: '#4caf50',
@@ -125,16 +131,28 @@ const TaskList = () => {
         >
           Tìm kiếm
         </button>
+        <input
+          type="text"
+          placeholder="Search by title..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
       </div>
 
-      <button
-      style={{
-        backgroundColor: '#4caf50',
-        color: 'white',
-      }}
-      onClick={() => setAddPopupOpen(true)}>
-        Thêm
-      </button>
+      <div className='add-delete'>
+        <button
+          className='add-task'
+          onClick={() => setAddPopupOpen(true)}
+        >
+            Thêm
+        </button>
+        <button
+          className='delete-all-task'
+          onClick={handleDeleteAllTasks}
+        >
+            Xoá tất cả
+        </button>
+      </div>
 
       <ul className="task-list">
         {searchResults.map((task) => (
@@ -184,14 +202,14 @@ const TaskList = () => {
             <p>Created At: {new Date(task.createdAt).toLocaleString()}</p>
             <p>Custom Notification Value: {task.customNoti?.value}</p>
             <p>Custom Notification Time: {task.customNoti?.time}</p>
-            <p>
-              Completed:
+            <div className='complete'>
+              <p>Completed:</p>
               <input
                 type="checkbox"
                 checked={task.completed}
                 onChange={() => handleCompleteTask(task._id)}
               />
-            </p>
+            </div>
 
             <button
             style={{
