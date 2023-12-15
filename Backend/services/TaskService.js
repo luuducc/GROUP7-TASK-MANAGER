@@ -5,8 +5,8 @@ exports.getAllTasks = async () => {
     .sort('-createdAt')
     .exec()
     .then(tasks => //sort properties in custom order
-      tasks.map(({ title, user, body, completed, customNoti, expiredDate, createdAt }) => ({ 
-        title, user, body, completed, customNoti, expiredDate, createdAt 
+      tasks.map(({ title, user, body, completed, customNoti, expiredDate, createdAt, _id }) => ({ 
+        title, user, body, completed, customNoti, expiredDate, createdAt, _id
       }))
     )
     .catch(err => {
