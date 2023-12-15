@@ -6,21 +6,21 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/login', {
-        username,
+      const response = await axios.post('http://localhost:3000/auth/login', {
+        email,
         password,
       });
       const { token, ...userData } = response.data;
       localStorage.setItem('token', token); // Store the token in localStorage or a more secure storage
       console.log(userData);
       toast.success('Login successful!');
-      navigate('/task');
+      navigate('/main');
       
     } catch (error) {
       console.error('Login failed:', error.response.data);
@@ -31,8 +31,8 @@ const Login = () => {
   return (
     <div>
       <form>
-        <label>Username:</label>
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <label>Email:</label>
+        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
 
         <label>Password:</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />

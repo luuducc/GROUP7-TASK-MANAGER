@@ -19,11 +19,10 @@ const TaskList = () => {
   const [editTask, setEditTask] = useState(null);
   const [isAddPopupOpen, setAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setEditPopupOpen] = useState(false);
-  // const [selectedTaskId, setSelectedTaskId] = useState(null);
-
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
-    // Fetch tasks from the API when the component mounts
     const fetchTasks = async () => {
       try {
         const response = await axios.get('http://localhost:3000/api/tasks');
@@ -34,12 +33,12 @@ const TaskList = () => {
     };
 
     fetchTasks();
-  }, []); // Empty dependency array means this effect runs once after the initial render
+  }, []);
 
   const handleAddTask = async () => {
     try {
       const response = await axios.post('http://localhost:3000/api/tasks', newTask);
-      setTasks([...tasks, response.data.data]);
+      setTasks([response.data.data, ...tasks]);
       setNewTask({ title: '', body: '', image: '',expiredDate: '', customNoti: { value: null, time: '' } });
       setAddPopupOpen(false);
 
@@ -77,16 +76,105 @@ const TaskList = () => {
     }
   };
 
+  const handleCompleteTask = async (taskId) => {
+    try {
+      const updatedCompletedStatus = !tasks.find((task) => task._id === taskId)?.completed;
+
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task._id === taskId ? { ...task, completed: updatedCompletedStatus } : task
+        )
+      );
+
+      await axios.put(`http://localhost:3000/api/tasks/${taskId}`, {
+        completed: updatedCompletedStatus,
+      });
+  
+      toast.success('handle successfully!');
+    } catch (error) {
+      console.error('Error marking task as complete:', error.message);
+      toast.error('Error marking task as complete');
+    }
+  };
+
+  const handleSearch = () => {
+    const filteredResults = tasks.filter((task) =>
+      task.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setSearchResults(filteredResults);
+  };
+  
+
   return (
     <div className="task-list-container">
       <ToastContainer />
       <h2>Task List</h2>
+      <div>
+        <input
+          type="text"
+          placeholder="Search by title..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button
+          style={{
+            backgroundColor: '#4caf50',
+            color: 'white',
+          }}
+          onClick={handleSearch}
+        >
+          Tìm kiếm
+        </button>
+      </div>
+
       <button
       style={{
         backgroundColor: '#4caf50',
         color: 'white',
       }}
-      onClick={() => setAddPopupOpen(true)}>Thêm</button>
+      onClick={() => setAddPopupOpen(true)}>
+        Thêm
+      </button>
+
+      <ul className="task-list">
+        {searchResults.map((task) => (
+          <li key={task._id} className="task-item">
+            <strong>{task.title}</strong>
+            <h1>{task.body}</h1>
+            <p>expiredDate: {new Date(task.expiredDate).toLocaleString()}</p>
+            <p>Created At: {new Date(task.createdAt).toLocaleString()}</p>
+            <p>Custom Notification Value: {task.customNoti?.value}</p>
+            <p>Custom Notification Time: {task.customNoti?.time}</p>
+            <p>
+              Completed:
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => handleCompleteTask(task._id)}
+              />
+            </p>
+
+            <button
+            style={{
+              backgroundColor: '#4caf50',
+              color: 'white',
+            }}
+            onClick={() => {
+              const taskId = task._id;
+              setEditTask(tasks.find(task => task._id === taskId));
+              setEditPopupOpen(true);
+            }}>Sửa</button>
+
+            <button 
+            style={{
+              backgroundColor: '#4caf50',
+              color: 'white',
+            }}
+            onClick={() => handleDeleteTask(task._id)}>Xoá</button>
+          </li>
+        ))}
+      </ul>
+
       <ul className="task-list">
         {tasks.map((task) => (
           <li key={task._id} className="task-item">
@@ -96,7 +184,14 @@ const TaskList = () => {
             <p>Created At: {new Date(task.createdAt).toLocaleString()}</p>
             <p>Custom Notification Value: {task.customNoti?.value}</p>
             <p>Custom Notification Time: {task.customNoti?.time}</p>
-            <p>Completed: {task.completed ? 'Yes' : 'No'}</p>
+            <p>
+              Completed:
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => handleCompleteTask(task._id)}
+              />
+            </p>
 
             <button
             style={{

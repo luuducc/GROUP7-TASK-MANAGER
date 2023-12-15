@@ -1,8 +1,6 @@
 // EditTaskForm.js
 import React from 'react';
 
-
-
 const EditTaskForm = ({ editTask, setEditTask, handleEditTask, onClose }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -84,15 +82,6 @@ const EditTaskForm = ({ editTask, setEditTask, handleEditTask, onClose }) => {
             <option value="hour">Hour</option>
             <option value="minute">Minute</option>
           </select>
-
-          <label htmlFor="editImage">Image:</label>
-          <input
-            type="text"
-            id="editImage"
-            name="image"
-            value={editTask.image}
-            onChange={handleChange}
-          />
 
           <button type="submit">Lưu</button>
           <button type="button" onClick={onClose}>
