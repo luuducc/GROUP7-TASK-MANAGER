@@ -1,6 +1,8 @@
 import React from 'react';
+// import { useDisclosure } from '@chakra-ui/react';
 
 const AddTaskForm = ({ newTask, setNewTask, handleAddTask, onClose }) => {
+
   return (
     <div className="popup">
       <div className="popup-content">
@@ -51,20 +53,25 @@ const AddTaskForm = ({ newTask, setNewTask, handleAddTask, onClose }) => {
             <option value="minute">Minute</option>
           </select>
         </label>
-
         <br />
+
         <button 
         style={{
           backgroundColor: '#4caf50',
           color: 'white',
         }}
-        onClick={handleAddTask}>Thêm</button> 
+        onClick={handleAddTask}>
+          Thêm
+        </button>
+
         <button 
         style={{
           backgroundColor: '#4caf50',
           color: 'white',
         }}
-        onClick={onClose}>Đóng</button>
+        onClick={onClose}>
+          Đóng
+        </button>
       </div>
     </div>
   );

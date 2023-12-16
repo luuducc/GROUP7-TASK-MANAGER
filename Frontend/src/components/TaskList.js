@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState({ 
+  const [newTask, setNewTask] = useState({
     title: '',
     body: '',
     image: '',
@@ -173,14 +173,14 @@ const TaskList = () => {
             </p>
 
             <button
-            style={{
-              backgroundColor: '#4caf50',
-              color: 'white',
-            }}
-            onClick={() => {
-              const taskId = task._id;
-              setEditTask(tasks.find(task => task._id === taskId));
-              setEditPopupOpen(true);
+              style={{
+                backgroundColor: '#4caf50',
+                color: 'white',
+              }}
+              onClick={() => {
+                const taskId = task._id;
+                setEditTask(tasks.find(task => task._id === taskId));
+                setEditPopupOpen(true);
             }}>Sửa</button>
 
             <button 
