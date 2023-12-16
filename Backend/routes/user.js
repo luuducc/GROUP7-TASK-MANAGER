@@ -20,4 +20,7 @@ router.delete("/delete/:id", verifyTokenAndUserAuthorization, userController.del
 //UPDATE USER INFOR
 router.put("/update/:id", verifyTokenAndUser, userController.updateUser);
 
+//CHECKPASS
+router.post("/checkPass/:id", verifyTokenAndUser, userController.checkPassUser);
+
 module.exports = router;

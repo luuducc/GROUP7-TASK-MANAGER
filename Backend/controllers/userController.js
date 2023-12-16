@@ -57,6 +57,20 @@ const userController = {
     }
   },
 
+  //CHECKPASS
+  checkPassUser: async(req, res) => {
+    const user = await User.findById(req.user.id );
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+    if (!validPassword) {
+      return res.status(404).json("Incorrect password");
+    }
+    else
+      return res.status(200).json("Done");
+  }
+
 };
 
 module.exports = userController;

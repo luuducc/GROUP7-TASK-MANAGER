@@ -5,6 +5,9 @@ const taskRouter = require("./routes/TaskRoutes");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/user");
 const todoList = require("./routes/todoList");
+const workspace = require("./routes/workspace");
+const taskProject = require("./routes/taskProject");
+
 const { setupSSEEndpoint, setupCronJob } = require('./sseHandler')
 const cors = require("cors");  // Import the cors middleware
 require('dotenv').config()
@@ -21,6 +24,8 @@ app.use("/api/tasks", taskRouter);
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
 app.use("/todo", todoList);
+app.use("/workspace", workspace);
+//app.use("/taskProject". taskProject);
 
 const start = async() => {
   try {
