@@ -2,7 +2,7 @@ const taskService = require("../services/TaskService");
 
 exports.getAllTasks = async (req, res) => {
   try {
-    const tasks = await taskService.getAllTasks();
+    const tasks = await taskService.getAllTasks(req.params.id);
     res.json({ status: "success", count: tasks.length, data: tasks });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -11,7 +11,7 @@ exports.getAllTasks = async (req, res) => {
 
 exports.deleteAllTask = async (req, res) => {
   try {
-    const task = await taskService.deleteAllTask();
+    const task = await taskService.deleteAllTask(req.params.id);
     res.json({ status: "success", data: task });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -21,7 +21,7 @@ exports.deleteAllTask = async (req, res) => {
 
 exports.createTask = async (req, res) => {
   try {
-    const task = await taskService.createTask(req.body);
+    const task = await taskService.createTask(req.params.id, req.body);
     res.json({ status: "success" , data: task });
   } catch (err) {
     console.log(err.message)
@@ -70,11 +70,7 @@ exports.getTaskByUser = async (req, res) => {
 
 exports.updateTask = async (req, res) => {
   try {
-    console.log("Task ID to update:", req.params.id);
-    console.log("Updated task data:", req.body);
-
-    const task = await taskService.updateTask(req.params.id, req.body);
-
+    const task = await taskService.updateTask(req.params.taskId, req.body);
     res.json({ status: "success", data: task });
   } catch (err) {
     console.log(err.message);
@@ -84,7 +80,8 @@ exports.updateTask = async (req, res) => {
 
 exports.deleteTask = async (req, res) => {
   try {
-    const task = await taskService.deleteTask(req.params.id);
+    console.log("passed")
+    const task = await taskService.deleteTask(req.params.taskId);
     res.json({ status: "success", data: task });
   } catch (err) {
     res.status(500).json({ error: err.message });

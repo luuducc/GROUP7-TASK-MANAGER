@@ -1,7 +1,7 @@
 const TaskModel = require("../models/Task");
 
-exports.getAllTasks = async () => {
-  return await TaskModel.find()
+exports.getAllTasks = async (userId) => {
+  return await TaskModel.find({user: userId})
     .sort('-createdAt')
     .exec()
     .then(tasks => //sort properties in custom order
@@ -14,12 +14,12 @@ exports.getAllTasks = async () => {
     })
 };
 
-exports.deleteAllTask = async () => {
-  return await TaskModel.deleteMany({});
+exports.deleteAllTask = async (userId) => {
+  return await TaskModel.deleteMany({user: userId});
 };
 
-exports.createTask = async (task) => {
-  return await TaskModel.create(task);
+exports.createTask = async (userId, task) => {
+  return await TaskModel.create({...task, user: userId});
 };
 exports.getTaskById = async (id) => {
   return await TaskModel.findById(id);
@@ -32,16 +32,15 @@ exports.getTaskByUser = async (user) => {
   return await TaskModel.find({ user })
 };
 
-exports.updateTask = async (id, task) => {
-  console.log("checkkk", task)
-  return await TaskModel.findByIdAndUpdate(id, task, {
+exports.updateTask = async (taskId, task) => {
+  return await TaskModel.findByIdAndUpdate(taskId, task, {
     new: true, // return the new item
-    // runValidators: true
+    runValidators: true
   });
 };
 
-exports.deleteTask = async (id) => {
-  return await TaskModel.findByIdAndDelete(id);
+exports.deleteTask = async (taskId) => {
+  return await TaskModel.findByIdAndDelete(taskId);
 };
 
 
