@@ -11,9 +11,9 @@ const Header = () => {
   return (
     <Tabs variant='enclosed' align='center' margin={0}>
       <TabList
-      width={832}
-      position={'fixed'} 
-      zIndex={10}
+        width={832}
+        position={'fixed'} 
+        zIndex={10}
       >
         <Tab>My Task</Tab>
         <Tab>Projects</Tab>
