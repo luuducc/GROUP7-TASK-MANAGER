@@ -256,3 +256,68 @@ button:active {
   display: flex;
   justify-content: center;
 }
+
+.search-task {
+  display: flex;
+}
+
+.search-task button {
+  background-color: #4caf50;
+  color: white;
+  padding: 0;
+  margin : 0;
+  width: 110px;
+  margin-right: 5px;
+}
+
+.search-task input {
+  padding: 0;
+  margin : 0;
+}
+
+.add-delete {
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-task {
+  background-color: #4caf50;
+  color: white;
+  margin: 10px 0;
+}
+
+.delete-all-task {
+  background-color: rgb(255, 87, 87);
+  color: white;
+  margin: 10px 0;
+}
+
+/* Add these styles to your CSS file or style tag */
+
+.complete {
+  display: flex;
+  align-items: center;
+}
+
+.complete p {
+  margin-right: 10px;
+}
+
+.complete input[type="checkbox"] {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border: 2px solid red; 
+  background-color: red;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  margin: 0;
+  vertical-align: middle;
+}
+
+.complete input[type="checkbox"]:checked {
+  background-color: #4caf50;
+  border-color: #4caf50;
+}

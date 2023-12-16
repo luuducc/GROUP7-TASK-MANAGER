@@ -1,6 +1,4 @@
-// AddTaskForm.js
 import React from 'react';
-
 
 const AddTaskForm = ({ newTask, setNewTask, handleAddTask, onClose }) => {
   return (
@@ -54,14 +52,6 @@ const AddTaskForm = ({ newTask, setNewTask, handleAddTask, onClose }) => {
           </select>
         </label>
 
-        <label>
-          Image URL:
-          <input
-            type="text"
-            value={newTask.image}
-            onChange={(e) => setNewTask({ ...newTask, image: e.target.value })}
-          />
-        </label>
         <br />
         <button 
         style={{
