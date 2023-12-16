@@ -8,7 +8,7 @@ const taskSchema = new Schema({
   // _id: Schema.Types.ObjectId,
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User' 
   },
   title: {
     type: String,
@@ -59,6 +59,7 @@ const taskSchema = new Schema({
     time: {
       type: String,
       enum: ['day', 'hour', 'minute'],
+      default: 'day',
       required: true,
     }
   },

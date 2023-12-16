@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState({ 
+  const [newTask, setNewTask] = useState({
     title: '',
     body: '',
     image: '',
