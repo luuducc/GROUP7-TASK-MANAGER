@@ -35,8 +35,8 @@ const Profile = () => {
     <div className="profile-container">
         <ToastContainer />
         <h2>Profile</h2>
-        <div class="container">
-            <div class="avatar">
+        <div className="container">
+            <div className="avatar">
                 <Image
                     borderRadius='full'
                     boxSize='150px'
@@ -44,10 +44,10 @@ const Profile = () => {
                     alt=''
                 />
             </div>
-            <div class="user-name">
+            <div className="user-name">
                 <p><strong>User Name:</strong> <span id="user-name"></span></p>
             </div>
-            <div class="user-info">
+            <div className="user-info">
                 <p><strong>Email:</strong> <span id="user-email"></span></p>
                 <p><strong>Password:</strong> <span id="user-password"></span></p>
             </div>

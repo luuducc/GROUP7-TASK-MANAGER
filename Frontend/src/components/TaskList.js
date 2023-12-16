@@ -14,7 +14,7 @@ const TaskList = () => {
     body: '',
     image: '',
     expiredDate: '',
-    customNoti: { value: null, time: 'day' }
+    customNoti: { value: undefined, time: 'day' }
   });
   const [editTask, setEditTask] = useState(null);
   const [isAddPopupOpen, setAddPopupOpen] = useState(false);
@@ -46,7 +46,7 @@ const TaskList = () => {
     try {
       const response = await axios.post('http://localhost:3000/api/tasks', newTask);
       setTasks([response.data.data, ...tasks]);
-      setNewTask({ title: '', body: '', image: '',expiredDate: '', customNoti: { value: null, time: '' } });
+      setNewTask({ title: '', body: '', image: '',expiredDate: '', customNoti: { value: undefined, time: 'day' } });
       setAddPopupOpen(false);
 
       toast.success('Task added successfully!');
