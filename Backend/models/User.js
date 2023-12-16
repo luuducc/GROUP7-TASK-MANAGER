@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema(
       require: true,
       min: 6,
     },
+    // image:{
+    //   type: image,
+    //   default: URL("https://th.bing.com/th/id/OIP.MO18PZq_EXc7P8VVS-LpkwHaHa?w=207&h=207&c=7&r=0&o=5&pid=1.7"),
+    // },
     isAdmin: {
       type: Boolean,
       default: false,

@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const taskRouter = require("./routes/TaskRoutes");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/user");
+const todoList = require("./routes/todoList");
 const { setupSSEEndpoint, setupCronJob } = require('./sseHandler')
 const cors = require("cors");  // Import the cors middleware
 require('dotenv').config()
@@ -19,6 +20,7 @@ app.use(express.static('./public'))
 app.use("/api/tasks", taskRouter); //
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
+app.use("/todo", todoList);
 
 const start = async() => {
   try {
