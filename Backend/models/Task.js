@@ -59,7 +59,7 @@ const taskSchema = new Schema({
     time: {
       type: String,
       enum: ['day', 'hour', 'minute'],
-      default: 'day',
+      // default: 'day',
       required: true,
     }
   },
