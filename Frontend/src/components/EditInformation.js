@@ -39,7 +39,7 @@ const EditInformation = ({ onClose }) => {
             toast.success('Changes saved successfully');
             onClose();
         } catch (error) {
-            toast.error('Incorrect password. Changes not saved.');
+            toast.error('Edit failed!');
         }
         onClose();
     };

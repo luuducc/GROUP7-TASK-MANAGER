@@ -3,13 +3,12 @@ import axios from 'axios';
 import './TaskList.css';
 import AddTaskForm from './AddTaskForm';
 import EditTaskForm from './EditTaskForm';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getUserData } from '../userStorage';
 
 let userData // initialize user data
 
-const TaskList = () => {
+const TaskList = ({displayToast}) => {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState({
     title: '',
@@ -57,7 +56,8 @@ const TaskList = () => {
     try {
       // console.log('new', newTask)
       if(newTask.customNoti.value < 0) {
-        toast.error('The value must be positive')
+        // toast.error('The value must be positive')
+        displayToast('The value must be positive', false);
         return
       } else {
         // if(newTask.customNoti.time === 'minute' && newTask.customNoti.value < 5) {
@@ -74,10 +74,12 @@ const TaskList = () => {
       setNewTask({ title: '', body: '', image: '',expiredDate: '', customNoti: { value: undefined, time: 'day' } });
       setAddPopupOpen(false);
 
-      toast.success('Task added successfully!');
+      // toast.success('Task added successfully!');
+      displayToast('Task added successfully!', true)
     } catch (error) {
       console.error('Error adding task:', error.message);
-      toast.error('Error adding task');
+      // toast.error('Error adding task');
+      displayToast('Error adding task', false);
     }
   };
 
@@ -85,7 +87,8 @@ const TaskList = () => {
     try {
       // console.log('edit', editTask)
       if(editTask.customNoti.value < 0) {
-        toast.error('The value must be positive')
+        // toast.error('The value must be positive')
+        displayToast('The value must be positive', false);
         return
       } else {
         // if(editTask.customNoti.time === 'minute' && editTask.customNoti.value < 5) {
@@ -104,10 +107,12 @@ const TaskList = () => {
       setEditTask(null);
       setEditPopupOpen(false);
 
-      toast.success('Task edited successfully!');
+      // toast.success('Task edited successfully!');
+      displayToast('Task edited successfully!', true)
     } catch (error) {
       console.error('Error editing task:', error.message);
-      toast.error('Error editing task');
+      // toast.error('Error editing task');
+      displayToast('Error editing task', false)
     }
   };
   
@@ -121,10 +126,13 @@ const TaskList = () => {
       });
       setTasks(tasks.filter((task) => task._id !== taskId));
 
-      toast.success('Task deleted successfully!');
+      // toast.success('Task deleted successfully!');
+      displayToast('Task deleted successfully!', true)
     } catch (error) {
       console.error('Error deleting task:', error.message);
-      toast.error('Error deleting task');
+      // toast.error('Error deleting task');
+      displayToast('Error deleting task', false)
+
     }
   };
 
@@ -136,10 +144,14 @@ const TaskList = () => {
         }
       });
       setTasks([]);
-      toast.success('All tasks deleted successfully!');
+      // toast.success('All tasks deleted successfully!');
+      displayToast('All tasks deleted successfully!', true)
+
     } catch (error) {
-      console.error('Error deleting all tasks:', error.message);
-      toast.error('Error deleting all tasks');
+      console.error('Error deleting all tasks', error.message);
+      // toast.error('Error deleting all tasks');
+      displayToast('Error deleting all tasks', false)
+
     }
   };
 
@@ -161,12 +173,15 @@ const TaskList = () => {
           }
         });
       if(updatedCompletedStatus) {
-        toast.success('Congratulation, you have done your job!');
+        // toast.success('Congratulation, you have done your job!');
+      displayToast('Congratulation, you have done your job!', true)
       } else
-        toast.error('Please finish your job!');
+        // toast.error('Please finish your job!');
+      displayToast('Please finish your job!', false)
     } catch (error) {
       console.error('Error marking task as complete:', error.message);
-      toast.error('Error marking task as complete');
+      // toast.error('Error marking task as complete');
+      displayToast('Error marking task as complete:', false)
     }
   };
 
@@ -180,7 +195,6 @@ const TaskList = () => {
 
   return (
     <div className="task-list-container">
-      <ToastContainer />
       <h2>Task List</h2>
       <div className='search-task'>
         <button
