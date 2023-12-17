@@ -37,7 +37,7 @@ const userController = {
   updateUser: async (req, res) => {
     try {
       const salt = await bcrypt.genSalt(10);
-      const hashed = await bcrypt.hash(req.body.password, salt);
+      const hashed = await bcrypt.hash(req.body.newpassword, salt);
       const updatedUser = await User.findByIdAndUpdate(
         req.params.id,
         {

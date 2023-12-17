@@ -26,3 +26,45 @@ body {
     font-size: 2em;
     margin-bottom: 20px;
 }
+
+.notification-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.notification-item {
+    background-color: #f0f0f0;
+    padding: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+  
+.notification-item .content {
+    display: inline-block;
+}
+  
+.notification-item strong {
+    margin-right: 10px;
+}
+
+.content div {
+    margin-left: 20px;
+}
+  
+.notification-item button {
+    background-color: #ff6464;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+  
+.notification-item button:hover {
+    background-color: #d63232;
+}
+  

@@ -33,7 +33,7 @@ const authController = {
         isAdmin: user.isAdmin,
       },
       process.env.ACCESS_KEY,
-      { expiresIn: "10m" }
+      { expiresIn: "1h" }
     );
   },
 
