@@ -63,8 +63,13 @@ const setupCronJob = (clientId, userId) => {
           } else {
             if(task.expired === false) { // just notify once
               console.log('this task has been expired', task.title)
-              sendSSEMessage(clientId, "The job has been expired!!!")
+              sendSSEMessage(clientId, {
+                name: task.title,
+                message: "The job has been expired!!!"
+              })
               task.expired = true
+              console.log("expired task:", task)
+              // await task.save() // save to mongodb
             } else {
               // donothing
             }

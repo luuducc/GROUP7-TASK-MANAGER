@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './Notification.css';
 import { getUserData } from '../userStorage';
+import { v4 as uuidv4 } from 'uuid' // to get the unique value despite the concurrent requests
+
 const Notification = () => {
   const [notifications, setNotifications] = useState([]);
   const userId = getUserData()._id
-  console.log("hello", userId)
+  // console.log("hello", userId)
   useEffect(() => {
     const eventSource = new EventSource(`http://localhost:3000/events/${userId}`) // connect to /events api
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data) ;
+      console.log('data', data)
       console.log('Received data from SSE:', data);
       console.log('message', data.message);
       console.log('noti:', data.name);
@@ -27,12 +30,15 @@ const Notification = () => {
 
   const addNotification = (message, name) => {
     const newNotification = {
-      id: Date.now(),
+      // get multi responses from server => id can have the same value!!
+      // id: Date.now(), 
+      id: uuidv4(),
       message,
       name,
     };
 
     setNotifications(prevNotifications => [...prevNotifications, newNotification]);
+    console.log("noti",notifications)
   };
 
   const removeNotification = (id) => {
