@@ -4,9 +4,6 @@ import './TaskList.css';
 import AddTaskForm from './AddTaskForm';
 import EditTaskForm from './EditTaskForm';
 import 'react-toastify/dist/ReactToastify.css';
-import { getUserData } from '../userStorage';
-
-let userData // initialize user data
 
 const TaskList = ({displayToast}) => {
   const [tasks, setTasks] = useState([]);
@@ -17,12 +14,13 @@ const TaskList = ({displayToast}) => {
     expiredDate: '',
     customNoti: { value: undefined, time: 'day' }
   });
-  // const [editTask, setEditTask] = useState(null);
   const [editTask, setEditTask] = useState(null);
-
   const [isAddPopupOpen, setAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setEditPopupOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const userId = localStorage.getItem('userId');
+  const token = localStorage.getItem('token');
 
   // new code
   const [displayedTasks, setDisplayedTasks] = useState([]);
@@ -35,11 +33,10 @@ const TaskList = ({displayToast}) => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        userData = getUserData() // get user data after login
-        const response = await axios.get(`http://localhost:3000/api/tasks/user/${userData._id}`, 
+        const response = await axios.get(`http://localhost:3000/api/tasks/user/${userId}`, 
           {
             headers: {
-              token: `Bearer ${localStorage.getItem('token')}`
+              token: `Bearer ${token}`
             }
           }
         );
@@ -65,9 +62,9 @@ const TaskList = ({displayToast}) => {
         //   return 
         // }
       }
-      const response = await axios.post(`http://localhost:3000/api/tasks/user/${userData._id}`, newTask, {
+      const response = await axios.post(`http://localhost:3000/api/tasks/user/${userId}`, newTask, {
         headers: {
-          token: `Bearer ${localStorage.getItem('token')}`
+          token: `Bearer ${token}`
         }
       });
       setTasks([response.data.data, ...tasks]);
@@ -97,10 +94,10 @@ const TaskList = ({displayToast}) => {
         // }
       }
       const response = await axios.put(
-        `http://localhost:3000/api/tasks/${editTask._id}/user/${userData._id}`,
+        `http://localhost:3000/api/tasks/${editTask._id}/user/${userId}`,
          editTask,{
           headers: {
-            token: `Bearer ${localStorage.getItem('token')}`
+            token: `Bearer ${token}`
           }
          });
       setTasks(tasks.map((task) => (task._id === editTask._id ? response.data.data : task)));
@@ -119,9 +116,9 @@ const TaskList = ({displayToast}) => {
 
   const handleDeleteTask = async (taskId) => {
     try {
-      await axios.delete(`http://localhost:3000/api/tasks/${taskId}/user/${userData._id}`, {
+      await axios.delete(`http://localhost:3000/api/tasks/${taskId}/user/${userId}`, {
         headers: {
-          token: `Bearer ${localStorage.getItem('token')}`
+          token: `Bearer ${token}`
         }
       });
       setTasks(tasks.filter((task) => task._id !== taskId));
@@ -138,9 +135,9 @@ const TaskList = ({displayToast}) => {
 
   const handleDeleteAllTasks = async () => {
     try {
-      await axios.delete(`http://localhost:3000/api/tasks/user/${userData._id}`, {
+      await axios.delete(`http://localhost:3000/api/tasks/user/${userId}`, {
         headers: {
-          token: `Bearer ${localStorage.getItem('token')}`
+          token: `Bearer ${token}`
         }
       });
       setTasks([]);
@@ -166,10 +163,10 @@ const TaskList = ({displayToast}) => {
         )
       );
 
-      await axios.put(`http://localhost:3000/api/tasks/${taskId}/user/${userData._id}`, 
+      await axios.put(`http://localhost:3000/api/tasks/${taskId}/user/${userId}`, 
         {completed: updatedCompletedStatus}, {
           headers: {
-            token: `Bearer ${localStorage.getItem('token')}`
+            token: `Bearer ${token}`
           }
         });
       if(updatedCompletedStatus) {

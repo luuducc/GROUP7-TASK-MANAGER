@@ -6,11 +6,14 @@ import { Box } from '@chakra-ui/react';
 import './Profile.css';
 import EditInformation from './EditInformation';
 import { useNavigate } from 'react-router-dom';
-import { getUserData } from '../userStorage';
+import axios from 'axios';
 
 const Profile = ({displayToast}) => {
-  let userData = getUserData();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [userData, setUserData] = useState({});
+  const userId = localStorage.getItem('userId');
+  const token = localStorage.getItem('token');
   const navigate = useNavigate();
 
   const handleEditClick = () => {
@@ -23,6 +26,26 @@ const Profile = ({displayToast}) => {
   
     navigate('/');
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/user/getUserByID/${userId}`, {
+          headers: {
+            token: `Bearer ${token}`,
+          },
+        });
+        const data = response.data;
+        setUserData(data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    if (userId) {
+      fetchUserData();
+    }
+  }, [userId, token]);
 
   return (
     <div className="profile-container">
