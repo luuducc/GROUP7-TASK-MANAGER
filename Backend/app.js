@@ -32,12 +32,12 @@ const start = async() => {
     await mongoose.connect(process.env.MONGODB_URI)
     console.log('connected to the db')
 
-    // Set up SSE Endpoint
+    // Set up SSE Endpoint and start cron job
     setupSSEEndpoint(app)
 
-    // Start cron job
-    setupCronJob()
-    //
+    // // Start cron job
+    // setupCronJob()
+    // //
     app.listen(3000, () => {
       console.log("Server is running on http://localhost:3000/");
     });

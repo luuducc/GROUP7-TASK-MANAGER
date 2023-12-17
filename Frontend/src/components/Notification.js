@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './Notification.css';
-
+import { getUserData } from '../userStorage';
 const Notification = () => {
   const [notifications, setNotifications] = useState([]);
-
+  const userId = getUserData()._id
+  console.log("hello", userId)
   useEffect(() => {
-    const eventSource = new EventSource("http://localhost:3000/events ")
+    const eventSource = new EventSource(`http://localhost:3000/events/${userId}`) // connect to /events api
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data) ;
       console.log('Received data from SSE:', data);
