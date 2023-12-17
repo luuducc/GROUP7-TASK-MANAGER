@@ -47,7 +47,7 @@ const Header = () => {
           <Notification/> 
         </TabPanel>
         <TabPanel>
-          <Profile/> 
+          <Profile displayToast={displayToast}/> 
         </TabPanel>
       </TabPanels>
     </Tabs>

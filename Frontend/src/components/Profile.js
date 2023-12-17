@@ -8,7 +8,7 @@ import EditInformation from './EditInformation';
 import { useNavigate } from 'react-router-dom';
 import { getUserData } from '../userStorage';
 
-const Profile = () => {
+const Profile = ({displayToast}) => {
   let userData = getUserData();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
@@ -71,7 +71,7 @@ const Profile = () => {
         </Box>
 
         <Modal isOpen={isOpen} onClose={onClose}>
-          <EditInformation onClose={onClose} />
+          <EditInformation onClose={onClose} displayToast={displayToast} />
         </Modal>
       </div>
     </div>
