@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
 import { Image } from '@chakra-ui/react';
 import { Button, Modal, useDisclosure } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
@@ -9,7 +8,7 @@ import EditInformation from './EditInformation';
 import { useNavigate } from 'react-router-dom';
 import { getUserData } from '../userStorage';
 
-const Profile = () => {
+const Profile = ({displayToast}) => {
   let userData = getUserData();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
@@ -27,7 +26,6 @@ const Profile = () => {
 
   return (
     <div className="profile-container">
-      <ToastContainer />
       <h2>Profile</h2>
       <div className="container">
         <div className="avatar">
@@ -73,7 +71,7 @@ const Profile = () => {
         </Box>
 
         <Modal isOpen={isOpen} onClose={onClose}>
-          <EditInformation onClose={onClose} />
+          <EditInformation onClose={onClose} displayToast={displayToast} />
         </Modal>
       </div>
     </div>

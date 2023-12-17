@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { getUserData } from '../userStorage';
 
-const EditInformation = ({ onClose }) => {
+const EditInformation = ({ onClose, displayToast }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [newpassword, setNewPassword] = useState('');
@@ -36,10 +36,12 @@ const EditInformation = ({ onClose }) => {
                 }
             });
 
-            toast.success('Changes saved successfully');
+            // toast.success('Changes saved successfully');
+            displayToast('Changes saved successfully', true)
             onClose();
         } catch (error) {
-            toast.error('Incorrect password. Changes not saved.');
+            // toast.error('Edit failed!');
+            displayToast('Edit failed!', false)
         }
         onClose();
     };

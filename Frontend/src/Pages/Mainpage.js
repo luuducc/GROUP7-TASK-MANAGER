@@ -6,11 +6,22 @@ import Todolist from '../components/Todolist';
 import Profile from '../components/Profile';
 import Workspace from '../components/Workspace';
 import Notification from '../components/Notification';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Center, AbsoluteCenter } from '@chakra-ui/react'
 
 const Header = () => {
+  const displayToast = (message, type) => {
+    if(type === true) { // success
+      toast.success(message)
+    } else { // error
+      toast.error(message)
+    }
+  }
   return (
-    <Tabs variant='enclosed' align='center' margin={0}>
+    <React.Fragment>
+      <ToastContainer />
+      <Tabs variant='enclosed' align='center' margin={0}>
       <TabList
         width={832}
         position={'fixed'} 
@@ -24,7 +35,7 @@ const Header = () => {
       </TabList>
       <TabPanels align='start'>
         <TabPanel>
-          <TaskList/>
+          <TaskList displayToast={displayToast}/>
         </TabPanel>
         <TabPanel>
           <Todolist/> 
@@ -36,10 +47,11 @@ const Header = () => {
           <Notification/> 
         </TabPanel>
         <TabPanel>
-          <Profile/> 
+          <Profile displayToast={displayToast}/> 
         </TabPanel>
       </TabPanels>
     </Tabs>
+    </React.Fragment>
   );
 };
 
