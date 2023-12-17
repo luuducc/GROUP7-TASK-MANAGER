@@ -70,6 +70,7 @@ exports.getTaskByUser = async (req, res) => {
 
 exports.updateTask = async (req, res) => {
   try {
+    console.log('body', req.body.customNoti)
     const task = await taskService.updateTask(req.params.taskId, req.body);
     if(task) {
       res.json({ status: "success", data: task });
