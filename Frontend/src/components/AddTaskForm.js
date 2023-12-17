@@ -37,7 +37,7 @@ const AddTaskForm = ({ newTask, setNewTask, handleAddTask, onClose }) => {
           Custom Notification Value:
           <input
             type="number"
-            value={newTask.customNoti.value}
+            value={newTask.customNoti.value || ''}
             onChange={(e) => setNewTask({ ...newTask, customNoti: { ...newTask.customNoti, value: e.target.value } })}
           />
         </label>

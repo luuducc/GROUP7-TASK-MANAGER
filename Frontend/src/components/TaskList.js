@@ -55,7 +55,16 @@ const TaskList = () => {
 
   const handleAddTask = async () => {
     try {
-      console.log('new', newTask)
+      // console.log('new', newTask)
+      if(newTask.customNoti.value < 0) {
+        toast.error('The value must be positive')
+        return
+      } else {
+        if(newTask.customNoti.time === 'minute' && newTask.customNoti.value < 5) {
+          toast.error('The minium time must be 5 minte')
+          return 
+        }
+      }
       const response = await axios.post(`http://localhost:3000/api/tasks/user/${userData._id}`, newTask, {
         headers: {
           token: `Bearer ${localStorage.getItem('token')}`
@@ -74,7 +83,16 @@ const TaskList = () => {
 
   const handleEditTask = async () => {
     try {
-      console.log('edit', editTask)
+      // console.log('edit', editTask)
+      if(editTask.customNoti.value < 0) {
+        toast.error('The value must be positive')
+        return
+      } else {
+        if(editTask.customNoti.time === 'minute' && editTask.customNoti.value < 5) {
+          toast.error('The minium time must be 5 minte')
+          return 
+        }
+      }
       const response = await axios.put(
         `http://localhost:3000/api/tasks/${editTask._id}/user/${userData._id}`,
          editTask,{
@@ -142,8 +160,10 @@ const TaskList = () => {
             token: `Bearer ${localStorage.getItem('token')}`
           }
         });
-  
-      toast.success('handle successfully!');
+      if(updatedCompletedStatus) {
+        toast.success('Congratulation, you have done your job!');
+      } else
+        toast.error('Please finish your job!');
     } catch (error) {
       console.error('Error marking task as complete:', error.message);
       toast.error('Error marking task as complete');

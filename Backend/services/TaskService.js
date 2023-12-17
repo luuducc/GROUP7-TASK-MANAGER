@@ -43,7 +43,7 @@ exports.getTaskByUser = async (user) => {
 exports.updateTask = async (taskId, task) => {
   return await TaskModel.findByIdAndUpdate(taskId, task, {
     new: true, // return the new item
-    runValidators: true
+    // runValidators: true // gặp lỗi, khi this lúc nhận từ update, khác this lúc nhận từ create, nên chạy validate lại bị sai
   })
     .populate({ path: 'user', select: 'username'});
 };
