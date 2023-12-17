@@ -22,7 +22,7 @@ exports.deleteAllTask = async (req, res) => {
 exports.createTask = async (req, res) => {
   try {
     const task = await taskService.createTask(req.params.id, req.body);
-    res.json({ status: "success" , data: task });
+    res.json({ status: "success", data: task });
   } catch (err) {
     console.log(err.message)
     res.status(500).json({ error: err.message });
@@ -71,7 +71,11 @@ exports.getTaskByUser = async (req, res) => {
 exports.updateTask = async (req, res) => {
   try {
     const task = await taskService.updateTask(req.params.taskId, req.body);
-    res.json({ status: "success", data: task });
+    if(task) {
+      res.json({ status: "success", data: task });
+    } else {
+      return res.status(404).json({ msg: `No task with id ${req.params.taskId}`})
+    }
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ error: err.message }); 
@@ -80,9 +84,12 @@ exports.updateTask = async (req, res) => {
 
 exports.deleteTask = async (req, res) => {
   try {
-    console.log("passed")
     const task = await taskService.deleteTask(req.params.taskId);
-    res.json({ status: "success", data: task });
+    if(task) {
+      res.json({ status: "success", data: task });
+    } else {
+      return res.status(404).json({ msg: `No task with id ${req.params.taskId}`})
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

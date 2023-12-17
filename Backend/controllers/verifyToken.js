@@ -8,7 +8,7 @@ const verifyToken = (req, res, next) => {
     const accessToken = token.split(" ")[1];
     jwt.verify(accessToken, process.env.ACCESS_KEY, (err, user) => {
       if (err) {
-        res.status(403).json("Token is not valid!");
+        return res.status(403).json("Token is not valid!");
       }
       req.user = user;
       next();
@@ -33,7 +33,7 @@ const verifyTokenAndUser = (req, res, next) => {
     if (req.user.id === req.params.id) {
       next();
     } else {
-      res.status(403).json("You're not allowed to do that 3!");
+      res.status(403).json("Incorrect userId!");
     }
   });
 }
