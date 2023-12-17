@@ -5,44 +5,25 @@ import { Image } from '@chakra-ui/react';
 import { Button, Modal, useDisclosure } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
 import './Profile.css';
-import axios from 'axios';
 import EditInformation from './EditInformation';
+import { useNavigate } from 'react-router-dom';
+import { getUserData } from '../userStorage';
 
 const Profile = () => {
+  let userData = getUserData();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [userData, setUserData] = useState({});
-  const userId = localStorage.getItem('userId');
-  const token = localStorage.getItem('token');
-
-  // console.log("userid: ",userId);
-  // console.log("token: ",token);
+  const navigate = useNavigate();
 
   const handleEditClick = () => {
     onOpen();
   };
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3000/user/getUserByID/${userId}`, {
-            headers: {
-                token: `Bearer ${token}`,
-            },
-        });
-        const data = response.data;
-
-        // console.log("data: ", data);
-        setUserData(data);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    // Check if userId is available before making the request
-    if (userId) {
-      fetchUserData();
-    }
-  }, [userId]);
+  const handleLogout = () => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('token');
+  
+    navigate('/');
+  };
 
   return (
     <div className="profile-container">
@@ -75,6 +56,19 @@ const Profile = () => {
             onClick={handleEditClick}
           >
             Edit Information
+          </Button>
+        </Box>
+
+        <Box
+          display='flex'
+          justifyContent='center'
+          mt={3}
+        >
+          <Button 
+            colorScheme='blue'
+            onClick={handleLogout}
+          >
+            Logout
           </Button>
         </Box>
 

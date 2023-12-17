@@ -5,13 +5,14 @@ import { Box } from '@chakra-ui/react';
 import './Profile.css';
 import React, { useState } from 'react';
 import axios from 'axios';
+import { getUserData } from '../userStorage';
 
 const EditInformation = ({ onClose }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [newpassword, setNewPassword] = useState('');
 
-    const userId = localStorage.getItem('userId');
+    const userId = getUserData()._id;
     const token = localStorage.getItem('token');
 
     const handleSaveChanges = async () => {
