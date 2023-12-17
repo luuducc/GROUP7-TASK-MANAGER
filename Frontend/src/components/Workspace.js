@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import './Projects.css';
 
-const Projects = () => {
+const Workspace = () => {
 
   return (
     <div className="projects-container">
@@ -14,4 +14,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default Workspace;

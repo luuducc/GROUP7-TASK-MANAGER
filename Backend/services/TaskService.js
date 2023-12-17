@@ -1,8 +1,10 @@
 const TaskModel = require("../models/Task");
 
-exports.getAllTasks = async () => {
-  return await TaskModel.find()
+exports.getAllTasks = async (userId) => {
+  return await TaskModel.find({user: userId})
     .sort('-createdAt')
+    // .populate('user', 'username') // get related informations of it's user
+    .populate({ path: 'user', select: 'username'}) // the same way to populate
     .exec()
     .then(tasks => //sort properties in custom order
       tasks.map(({ title, user, body, completed, customNoti, expiredDate, createdAt, _id }) => ({ 
@@ -14,34 +16,41 @@ exports.getAllTasks = async () => {
     })
 };
 
-exports.deleteAllTask = async () => {
-  return await TaskModel.deleteMany({});
+exports.deleteAllTask = async (userId) => {
+  return await TaskModel.deleteMany({user: userId})
 };
 
-exports.createTask = async (task) => {
-  return await TaskModel.create(task);
+exports.createTask = async (userId, task) => {
+  // return await TaskModel.create({...task, user: userId})
+  //   .populate({ path: 'user', select: 'username'});
+  const newTask = await TaskModel.create({...task, user: userId})
+    return newTask.populate({ path: 'user', select: 'username'});
 };
 exports.getTaskById = async (id) => {
-  return await TaskModel.findById(id);
+  return await TaskModel.findById(id)
+    .populate({ path: 'user', select: 'username'});
 };
 exports.getTaskByTitle = async (title) => {
   return await TaskModel.find({ title })
+    .populate({ path: 'user', select: 'username'})
 };
 
 exports.getTaskByUser = async (user) => {
   return await TaskModel.find({ user })
+    .populate({ path: 'user', select: 'username'})
 };
 
-exports.updateTask = async (id, task) => {
-  console.log("checkkk", task)
-  return await TaskModel.findByIdAndUpdate(id, task, {
+exports.updateTask = async (taskId, task) => {
+  return await TaskModel.findByIdAndUpdate(taskId, task, {
     new: true, // return the new item
-    // runValidators: true
-  });
+    // runValidators: true // gặp lỗi, khi this lúc nhận từ update, khác this lúc nhận từ create, nên chạy validate lại bị sai
+  })
+    .populate({ path: 'user', select: 'username'});
 };
 
-exports.deleteTask = async (id) => {
-  return await TaskModel.findByIdAndDelete(id);
+exports.deleteTask = async (taskId) => {
+  return await TaskModel.findByIdAndDelete(taskId)
+    .populate({ path: 'user', select: 'username'});
 };
 
 

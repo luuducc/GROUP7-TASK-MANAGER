@@ -2,8 +2,9 @@
 import React from 'react';
 import './Mainpage.css';
 import TaskList from '../components/TaskList';
+import Todolist from '../components/Todolist';
 import Profile from '../components/Profile';
-import Project from '../components/Projects';
+import Workspace from '../components/Workspace';
 import Notification from '../components/Notification';
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Center, AbsoluteCenter } from '@chakra-ui/react'
 
@@ -16,7 +17,8 @@ const Header = () => {
         zIndex={10}
       >
         <Tab>My Task</Tab>
-        <Tab>Projects</Tab>
+        <Tab>My Todolist</Tab>
+        <Tab>Workspace</Tab>
         <Tab>Notification</Tab>
         <Tab>Profile</Tab>
       </TabList>
@@ -25,7 +27,10 @@ const Header = () => {
           <TaskList/>
         </TabPanel>
         <TabPanel>
-          <Project/> 
+          <Todolist/> 
+        </TabPanel>
+        <TabPanel>
+          <Workspace/> 
         </TabPanel>
         <TabPanel>
           <Notification/> 
