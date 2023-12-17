@@ -11,17 +11,28 @@ const EditInformation = ({ onClose }) => {
     const [password, setPassword] = useState('');
     const [newpassword, setNewPassword] = useState('');
 
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+
     const handleSaveChanges = async () => {
         try {
-            const response = await axios.post(`http://localhost:3000/user`, {
+            
+            await axios.post(`http://localhost:3000/user/checkPass/${userId}`, {
                 password,
-            });
-
-            // Nếu mật khẩu trùng khớp, thực hiện lưu dữ liệu thay đổi lên backend và thông báo
-            // (Bạn cần thay đổi đường dẫn và nội dung của yêu cầu POST dựa trên backend của bạn)
-            await axios.post('https://your-backend-api.com/saveChanges', {
+            }, {
+                headers: {
+                    token: `Bearer ${token}`
+                }
+            });  
+            
+            await axios.put(`http://localhost:3000/user/update/${userId}`, {
                 username,
                 newpassword,
+                password
+            }, {
+                headers: {
+                    token: `Bearer ${token}`
+                }
             });
 
             toast.success('Changes saved successfully');

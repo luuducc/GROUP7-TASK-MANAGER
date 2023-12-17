@@ -24,7 +24,7 @@ const TaskList = () => {
   // new code
   const [displayedTasks, setDisplayedTasks] = useState([]);
   useEffect(() => {
-    setDisplayedTasks(tasks); // Sử dụng biến tasks ban đầu để hiển thị toàn bộ danh sách công việc
+    setDisplayedTasks(tasks); 
   }, [tasks]);
 
   //

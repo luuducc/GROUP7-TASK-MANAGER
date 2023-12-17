@@ -16,8 +16,9 @@ const Login = () => {
         email,
         password,
       });
-      const { token, ...userData } = response.data;
-      localStorage.setItem('token', token); // Store the token in localStorage or a more secure storage
+      const {...userData } = response.data;
+      localStorage.setItem('token', userData.accessToken); // Store the token in localStorage
+      localStorage.setItem('userId', userData._id);
       console.log(userData);
       toast.success('Login successful!');
       navigate('/main');

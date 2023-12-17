@@ -4,6 +4,7 @@ import './Notification.css';
 const Notification = () => {
   const [notifications, setNotifications] = useState([]);
 
+  // Hàm này sẽ thêm một thông báo mới vào danh sách
   const addNotification = (message) => {
     const newNotification = {
       id: Date.now(),
@@ -14,10 +15,12 @@ const Notification = () => {
   };
 
   useEffect(() => {
+    // Gọi hàm addNotification khi component được render để thêm thông báo mặc định
     addNotification('This is a permanent notification');
   }, []);
 
   const removeNotification = (id) => {
+    // Loại bỏ thông báo khỏi danh sách khi người dùng đóng thông báo
     setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== id));
   };
 
@@ -28,7 +31,7 @@ const Notification = () => {
         {notifications.map(notification => (
           <li key={notification.id} className="notification-item">
             {notification.message}
-            <button onClick={() => removeNotification(notification.id)}>Delete</button>
+            <button onClick={() => removeNotification(notification.id)}>Close</button>
           </li>
         ))}
       </ul>
