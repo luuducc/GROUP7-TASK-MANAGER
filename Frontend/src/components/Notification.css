@@ -33,26 +33,38 @@ body {
 }
 
 .notification-item {
-    background-color: #ccc;
+    background-color: #f0f0f0;
+    padding: 5px;
     margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 8px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+  
+.notification-item .content {
+    display: inline-block;
+}
+  
+.notification-item strong {
+    margin-right: 10px;
 }
 
+.content div {
+    margin-left: 20px;
+}
+  
 .notification-item button {
-    background-color: #dc3545;
+    background-color: #ff6464;
     color: #fff;
     border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
+    padding: 5px 10px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    border-radius: 3px;
 }
-
+  
 .notification-item button:hover {
-    background-color: #c82333;
+    background-color: #d63232;
 }
+  

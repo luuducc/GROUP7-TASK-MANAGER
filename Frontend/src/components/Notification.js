@@ -4,23 +4,37 @@ import './Notification.css';
 const Notification = () => {
   const [notifications, setNotifications] = useState([]);
 
-  // Hàm này sẽ thêm một thông báo mới vào danh sách
-  const addNotification = (message) => {
+  useEffect(() => {
+    const eventSource = new EventSource("http://localhost:3000/events ")
+    eventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data) ;
+      console.log('Received data from SSE:', data);
+      console.log('message', data.message);
+      console.log('noti:', data.name);
+
+      addNotification(data.message, data.name);
+    }
+
+    eventSource.onerror = (error) => {
+      console.error('SSE Error: ', error);
+      eventSource.close();
+    }
+    return () => {
+      eventSource.close();
+    }
+  }, [])
+
+  const addNotification = (message, name) => {
     const newNotification = {
       id: Date.now(),
       message,
+      name,
     };
 
     setNotifications(prevNotifications => [...prevNotifications, newNotification]);
   };
 
-  useEffect(() => {
-    // Gọi hàm addNotification khi component được render để thêm thông báo mặc định
-    addNotification('This is a permanent notification');
-  }, []);
-
   const removeNotification = (id) => {
-    // Loại bỏ thông báo khỏi danh sách khi người dùng đóng thông báo
     setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== id));
   };
 
@@ -30,8 +44,13 @@ const Notification = () => {
       <ul className="notification-list">
         {notifications.map(notification => (
           <li key={notification.id} className="notification-item">
-            {notification.message}
-            <button onClick={() => removeNotification(notification.id)}>Close</button>
+            <div className='content'>
+              <strong>{notification.name}</strong>
+              <div>{notification.message}</div>
+            </div>         
+            <button onClick={() => removeNotification(notification.id)}>
+              Delete
+            </button>
           </li>
         ))}
       </ul>
