@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './TaskList.css';
@@ -6,6 +5,9 @@ import AddTaskForm from './AddTaskForm';
 import EditTaskForm from './EditTaskForm';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getUserData } from '../userStorage';
+
+let userData // initialize user data
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -16,7 +18,9 @@ const TaskList = () => {
     expiredDate: '',
     customNoti: { value: undefined, time: 'day' }
   });
+  // const [editTask, setEditTask] = useState(null);
   const [editTask, setEditTask] = useState(null);
+
   const [isAddPopupOpen, setAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setEditPopupOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -32,7 +36,14 @@ const TaskList = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/tasks');
+        userData = getUserData() // get user data after login
+        const response = await axios.get(`http://localhost:3000/api/tasks/user/${userData._id}`, 
+          {
+            headers: {
+              token: `Bearer ${localStorage.getItem('token')}`
+            }
+          }
+        );
         setTasks(response.data.data);
       } catch (error) {
         console.error('Error fetching tasks:', error.message);
@@ -44,7 +55,21 @@ const TaskList = () => {
 
   const handleAddTask = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/api/tasks', newTask);
+      // console.log('new', newTask)
+      if(newTask.customNoti.value < 0) {
+        toast.error('The value must be positive')
+        return
+      } else {
+        if(newTask.customNoti.time === 'minute' && newTask.customNoti.value < 5) {
+          toast.error('The minium time must be 5 minte')
+          return 
+        }
+      }
+      const response = await axios.post(`http://localhost:3000/api/tasks/user/${userData._id}`, newTask, {
+        headers: {
+          token: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
       setTasks([response.data.data, ...tasks]);
       setNewTask({ title: '', body: '', image: '',expiredDate: '', customNoti: { value: undefined, time: 'day' } });
       setAddPopupOpen(false);
@@ -58,7 +83,23 @@ const TaskList = () => {
 
   const handleEditTask = async () => {
     try {
-      const response = await axios.put(`http://localhost:3000/api/tasks/${editTask._id}`, editTask);
+      // console.log('edit', editTask)
+      if(editTask.customNoti.value < 0) {
+        toast.error('The value must be positive')
+        return
+      } else {
+        if(editTask.customNoti.time === 'minute' && editTask.customNoti.value < 5) {
+          toast.error('The minium time must be 5 minte')
+          return 
+        }
+      }
+      const response = await axios.put(
+        `http://localhost:3000/api/tasks/${editTask._id}/user/${userData._id}`,
+         editTask,{
+          headers: {
+            token: `Bearer ${localStorage.getItem('token')}`
+          }
+         });
       setTasks(tasks.map((task) => (task._id === editTask._id ? response.data.data : task)));
       setEditTask(null);
       setEditPopupOpen(false);
@@ -73,7 +114,11 @@ const TaskList = () => {
 
   const handleDeleteTask = async (taskId) => {
     try {
-      await axios.delete(`http://localhost:3000/api/tasks/${taskId}`);
+      await axios.delete(`http://localhost:3000/api/tasks/${taskId}/user/${userData._id}`, {
+        headers: {
+          token: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
       setTasks(tasks.filter((task) => task._id !== taskId));
 
       toast.success('Task deleted successfully!');
@@ -85,7 +130,11 @@ const TaskList = () => {
 
   const handleDeleteAllTasks = async () => {
     try {
-      await axios.delete(`http://localhost:3000/api/tasks`);
+      await axios.delete(`http://localhost:3000/api/tasks/user/${userData._id}`, {
+        headers: {
+          token: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
       setTasks([]);
       toast.success('All tasks deleted successfully!');
     } catch (error) {
@@ -105,11 +154,16 @@ const TaskList = () => {
         )
       );
 
-      await axios.put(`http://localhost:3000/api/tasks/${taskId}`, {
-        completed: updatedCompletedStatus,
-      });
-  
-      toast.success('handle successfully!');
+      await axios.put(`http://localhost:3000/api/tasks/${taskId}/user/${userData._id}`, 
+        {completed: updatedCompletedStatus}, {
+          headers: {
+            token: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+      if(updatedCompletedStatus) {
+        toast.success('Congratulation, you have done your job!');
+      } else
+        toast.error('Please finish your job!');
     } catch (error) {
       console.error('Error marking task as complete:', error.message);
       toast.error('Error marking task as complete');

@@ -6,9 +6,14 @@ const Schema = mongoose.Schema;
 // từ dữ liệu json sẽ xây dựng lên giao diện,
 const taskSchema = new Schema({
   // _id: Schema.Types.ObjectId,
+  workspace: {
+    type: Schema.Types.ObjectId,
+    ref: 'Workspace'
+  },
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User' 
+    ref: 'User',
+    required: true
   },
   title: {
     type: String,

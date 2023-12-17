@@ -1,9 +1,10 @@
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { setUserData } from '../userStorage'; // store user info
+import { useRadio } from '@chakra-ui/react';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,9 +17,9 @@ const Login = () => {
         email,
         password,
       });
-      const { token, ...userData } = response.data;
-      localStorage.setItem('token', token); // Store the token in localStorage or a more secure storage
-      console.log(userData);
+      const { accessToken, ...userData } = response.data;
+      setUserData(userData) // store
+      localStorage.setItem('token', accessToken); // Store the token in localStorage or a more secure storage
       toast.success('Login successful!');
       navigate('/main');
       

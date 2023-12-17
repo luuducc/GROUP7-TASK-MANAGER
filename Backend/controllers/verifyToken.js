@@ -8,13 +8,13 @@ const verifyToken = (req, res, next) => {
     const accessToken = token.split(" ")[1];
     jwt.verify(accessToken, process.env.ACCESS_KEY, (err, user) => {
       if (err) {
-        res.status(403).json("Token is not valid!");
+        return res.status(403).json("Token is not valid!");
       }
       req.user = user;
       next();
     });
   } else {
-    res.status(401).json("You're not authenticated");
+    res.status(401).json("Please require a token!!");
   }
 };
 
@@ -23,7 +23,7 @@ const verifyTokenAndUserAuthorization = (req, res, next) => {
     if (req.user.id === req.params.id|| req.user.isAdmin) {
       next();
     } else {
-      res.status(403).json("You're not allowed to do that!");
+      res.status(403).json("You're not allowed to do that 2!");
     }
   });
 };
@@ -33,7 +33,7 @@ const verifyTokenAndUser = (req, res, next) => {
     if (req.user.id === req.params.id) {
       next();
     } else {
-      res.status(403).json("You're not allowed to do that!");
+      res.status(403).json("Incorrect userId!");
     }
   });
 }
@@ -43,7 +43,7 @@ const verifyTokenAndAdmin = (req, res, next) => {
     if (req.user.isAdmin) {
       next();
     } else {
-      res.status(403).json("You're not allowed to do that!");
+      res.status(403).json("You're not allowed to do that 4!");
     }
   });
 };
