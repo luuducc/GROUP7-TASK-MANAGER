@@ -2,7 +2,7 @@
 const { addClient, removeClient, sendSSEMessage } = require('./utils');
 const Task = require('./models/Task');
 const cron = require('node-cron');
-
+const {updateTask} = require("./services/TaskService");
 const setupCronJob = (clientId, userId) => {
   cron.schedule("* * * * *", async () => { // schedule every 1 minute
     try {
@@ -69,7 +69,7 @@ const setupCronJob = (clientId, userId) => {
               })
               task.expired = true
               console.log("expired task:", task)
-              // await task.save() // save to mongodb
+              updateTask(task._id, task) // update task to mongodb
             } else {
               // donothing
             }
@@ -88,6 +88,7 @@ const setupSSEEndpoint = (app) => {
   app.get('/events/:userId', (req, res) => { // wait for the client to connect to this endpoint
     console.log("ket noi dc events")
     const {userId} = req.params // get the userId
+    
     res.setHeader('Content-Type', 'text/event-stream')
     res.setHeader('Cache-Control', 'no-cache')
     res.setHeader('Connection', 'keep-alive')
