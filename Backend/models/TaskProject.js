@@ -1,15 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// TaskSchema : title, createdAt, image, content
-// CRUD
-// từ dữ liệu json sẽ xây dựng lên giao diện,
-const taskSchema = new Schema({
-  // _id: Schema.Types.ObjectId,
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'User' 
-  },
+
+const taskProjectSchema = new Schema({
+  user: { type: Schema.Types.ObjectId, ref: 'WorkSpace' },
   title: {
     type: String,
     required: true
@@ -59,9 +53,8 @@ const taskSchema = new Schema({
     time: {
       type: String,
       enum: ['day', 'hour', 'minute'],
-      // default: 'day',
-      required: true,
-    }
+      required: true, 
+    }  
   },
   completed: {
     type: Boolean,
@@ -69,4 +62,4 @@ const taskSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model("Task", taskSchema);
+module.exports = mongoose.model("TaskProject", taskProjectSchema);

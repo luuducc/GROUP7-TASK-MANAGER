@@ -13,6 +13,16 @@ const userController = {
     }
   },
 
+  //GET USER BY ID
+  getUserByID: async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+      res.status(200).json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
   //DELETE A USER
   deleteUser: async (req, res) => {
     try {
@@ -46,6 +56,20 @@ const userController = {
       res.status(500).json(err);
     }
   },
+
+  //CHECKPASS
+  checkPassUser: async(req, res) => {
+    const user = await User.findById(req.user.id );
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+    if (!validPassword) {
+      return res.status(404).json("Incorrect password");
+    }
+    else
+      return res.status(200).json("Done");
+  }
 
 };
 
