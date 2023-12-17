@@ -52,13 +52,13 @@ const taskSchema = new Schema({
           },
           message: 'time must be positive'
         },
-        {
-          validator: function(val) {
-            if(this.customNoti.time === 'minute') 
-              return val >= 5
-          },
-          message: 'the minimum time is 5 minute'
-        }
+        // {
+        //   validator: function(val) {
+        //     if(this.customNoti.time === 'minute') 
+        //       return val >= 5
+        //   },
+        //   message: 'the minimum time is 5 minute'
+        // }
       ]
     },
     time: {
@@ -71,6 +71,10 @@ const taskSchema = new Schema({
   completed: {
     type: Boolean,
     default: false,
+  },
+  expired: {
+    type: Boolean,
+    default: false
   }
 });
 

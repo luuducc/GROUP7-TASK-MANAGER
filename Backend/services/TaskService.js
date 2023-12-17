@@ -7,8 +7,10 @@ exports.getAllTasks = async (userId) => {
     .populate({ path: 'user', select: 'username'}) // the same way to populate
     .exec()
     .then(tasks => //sort properties in custom order
-      tasks.map(({ title, user, body, completed, customNoti, expiredDate, createdAt, _id }) => ({ 
-        title, user, body, completed, customNoti, expiredDate, createdAt, _id
+      tasks.map(({ 
+        title, user, body, completed, customNoti, expiredDate, createdAt, _id, expired
+      }) => ({ 
+        title, user, body, completed, customNoti, expiredDate, createdAt, _id, expired
       }))
     )
     .catch(err => {

@@ -60,10 +60,10 @@ const TaskList = () => {
         toast.error('The value must be positive')
         return
       } else {
-        if(newTask.customNoti.time === 'minute' && newTask.customNoti.value < 5) {
-          toast.error('The minium time must be 5 minte')
-          return 
-        }
+        // if(newTask.customNoti.time === 'minute' && newTask.customNoti.value < 5) {
+        //   toast.error('The minium time must be 5 minute')
+        //   return 
+        // }
       }
       const response = await axios.post(`http://localhost:3000/api/tasks/user/${userData._id}`, newTask, {
         headers: {
@@ -88,10 +88,10 @@ const TaskList = () => {
         toast.error('The value must be positive')
         return
       } else {
-        if(editTask.customNoti.time === 'minute' && editTask.customNoti.value < 5) {
-          toast.error('The minium time must be 5 minte')
-          return 
-        }
+        // if(editTask.customNoti.time === 'minute' && editTask.customNoti.value < 5) {
+        //   toast.error('The minium time must be 5 minute')
+        //   return 
+        // }
       }
       const response = await axios.put(
         `http://localhost:3000/api/tasks/${editTask._id}/user/${userData._id}`,
