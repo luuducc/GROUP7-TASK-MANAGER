@@ -28,7 +28,7 @@ const taskSchema = new Schema({
   }, 
   expiredDate: {
     type: Date,
-    required: true,
+    // required: true,
     validate: {
       validator: function(date) {
         return date > new Date()
@@ -39,7 +39,7 @@ const taskSchema = new Schema({
   customNoti: {
     value: {
       type: Number,
-      required: true,
+      // required: true,
       validate: [
         {
           validator: function(val) {
@@ -61,7 +61,7 @@ const taskSchema = new Schema({
       type: String,
       enum: ['day', 'hour', 'minute'],
       // default: 'day',
-      required: true,
+      // required: true,
     }
   },
   completed: {
@@ -69,6 +69,10 @@ const taskSchema = new Schema({
     default: false,
   },
   expired: {
+    type: Boolean,
+    default: false
+  },
+  inWorkspace: { // có thể là task cá nhân hoặc task chung trong workspace 
     type: Boolean,
     default: false
   }

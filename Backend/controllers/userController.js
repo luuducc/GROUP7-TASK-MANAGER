@@ -23,6 +23,29 @@ const userController = {
     }
   },
 
+  //GET USER BY EMAIL
+  getUserByEmail: async (req, res, next) => {
+    try {
+      if(req.body.email){
+        const user = await User.find({email: req.body.email}); // return an array
+        if(user.length > 0) {
+          // because email is unique => only 1 user is returned => array has length 1
+          const userId = user[0]._id.toHexString() 
+          req.userId = userId
+          next()
+          // return res.status(200).json(user);
+        } else {
+          return res.status(404).json({msg: `cannot find user with email ${req.body.email}`});
+        }
+      } else{
+        return res.status(404).json({msg: 'Please provide an email!'});
+      }
+      
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
   //DELETE A USER
   deleteUser: async (req, res) => {
     try {

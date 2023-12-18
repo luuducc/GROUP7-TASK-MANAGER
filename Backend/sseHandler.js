@@ -79,7 +79,7 @@ const setupCronJob = (clientId, userId) => {
         
       })   
     } catch (error) {
-      console.error("Error: " + error.message)
+      console.error("Error in SSE handler: " + error.message)
     }
   })
 }
