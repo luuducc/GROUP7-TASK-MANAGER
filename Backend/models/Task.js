@@ -71,6 +71,10 @@ const taskSchema = new Schema({
   expired: {
     type: Boolean,
     default: false
+  },
+  inWorkspace: { // có thể là task cá nhân hoặc task chung trong workspace 
+    type: Boolean,
+    default: false
   }
 });
 

@@ -25,5 +25,6 @@ router.route("/:taskId/user/:id")
 // ADMIN HERE!!
 router.route('/admin/:id')
   .post(verifyTokenAndUser, verifyTokenAndAdmin, getUserByEmail, createTaskForAdmin)
+  .get(verifyTokenAndUser, verifyTokenAndAdmin,)
 
 module.exports = router;

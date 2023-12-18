@@ -1,16 +1,16 @@
 const TaskModel = require("../models/Task");
 
 exports.getAllTasks = async (userId) => {
-  return await TaskModel.find({user: userId})
+  return await TaskModel.find({user: userId, inWorkspace: false})
     .sort('-createdAt')
     // .populate('user', 'username') // get related informations of it's user
     .populate({ path: 'user', select: 'username email'}) // the same way to populate
     .exec()
     .then(tasks => //sort properties in custom order
       tasks.map(({ 
-        title, user, body, completed, customNoti, expiredDate, createdAt, _id, expired
+        title, user, body, completed, customNoti, expiredDate, createdAt, _id, expired, inWorkspace
       }) => ({ 
-        title, user, body, completed, customNoti, expiredDate, createdAt, _id, expired
+        title, user, body, completed, customNoti, expiredDate, createdAt, _id, expired, inWorkspace
       }))
     )
     .catch(err => {
@@ -52,6 +52,6 @@ exports.deleteTask = async (taskId) => {
 
 // ADMIN HERE!!
 exports.createTaskForAdmin = async (task, userId) => {
-  const newTask = await TaskModel.create({...task, user: userId})
+  const newTask = await TaskModel.create({...task, user: userId, inWorkspace: true})
     return newTask.populate({ path: 'user', select: 'username'});
 };
