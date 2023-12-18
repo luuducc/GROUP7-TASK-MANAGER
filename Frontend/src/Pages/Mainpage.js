@@ -19,8 +19,6 @@ const Header = () => {
     }
   }
   return (
-    <React.Fragment>
-      <ToastContainer />
       <Tabs variant='enclosed' align='center' margin={0}>
       <TabList
         width={832}
@@ -51,7 +49,6 @@ const Header = () => {
         </TabPanel>
       </TabPanels>
     </Tabs>
-    </React.Fragment>
   );
 };
 

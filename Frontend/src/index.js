@@ -13,7 +13,8 @@ root.render(
   <React.StrictMode>
     <ChakraProvider>
       <App />
-      <ToastContainer />
+      {/* Only ToastContainer here! */}
+      <ToastContainer /> 
     </ChakraProvider>
   </React.StrictMode>
 );
