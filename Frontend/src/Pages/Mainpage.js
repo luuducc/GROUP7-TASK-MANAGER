@@ -38,7 +38,7 @@ const Header = () => {
           <TaskList displayToast={displayToast}/>
         </TabPanel>
         <TabPanel>
-          <Todolist/> 
+          <Todolist displayToast={displayToast}/> 
         </TabPanel>
         <TabPanel>
           <Workspace/> 

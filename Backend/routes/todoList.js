@@ -10,7 +10,7 @@ const {
 const router = require("express").Router();
 
 //CREATE TODOLIST
-router.get("/create", verifyToken, todoListController.createTodoList);
+router.post("/create", verifyToken, todoListController.createTodoList);
 
 //GET ALL TODOLIST
 router.get("/getAll/:id", verifyTokenAndUser, todoListController.getAllTodoList);

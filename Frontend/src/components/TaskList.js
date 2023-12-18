@@ -5,7 +5,7 @@ import AddTaskForm from './AddTaskForm';
 import EditTaskForm from './EditTaskForm';
 import 'react-toastify/dist/ReactToastify.css';
 
-const TaskList = ({displayToast}) => {
+const TaskList = ({ displayToast }) => {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState({
     title: '',
@@ -25,7 +25,7 @@ const TaskList = ({displayToast}) => {
   // new code
   const [displayedTasks, setDisplayedTasks] = useState([]);
   useEffect(() => {
-    setDisplayedTasks(tasks); 
+    setDisplayedTasks(tasks);
   }, [tasks]);
 
   //
@@ -33,7 +33,7 @@ const TaskList = ({displayToast}) => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/tasks/user/${userId}`, 
+        const response = await axios.get(`http://localhost:3000/api/tasks/user/${userId}`,
           {
             headers: {
               token: `Bearer ${token}`
@@ -52,7 +52,7 @@ const TaskList = ({displayToast}) => {
   const handleAddTask = async () => {
     try {
       // console.log('new', newTask)
-      if(newTask.customNoti.value < 0) {
+      if (newTask.customNoti.value < 0) {
         // toast.error('The value must be positive')
         displayToast('The value must be positive', false);
         return
@@ -68,7 +68,7 @@ const TaskList = ({displayToast}) => {
         }
       });
       setTasks([response.data.data, ...tasks]);
-      setNewTask({ title: '', body: '', image: '',expiredDate: '', customNoti: { value: undefined, time: 'day' } });
+      setNewTask({ title: '', body: '', image: '', expiredDate: '', customNoti: { value: undefined, time: 'day' } });
       setAddPopupOpen(false);
 
       // toast.success('Task added successfully!');
@@ -83,7 +83,7 @@ const TaskList = ({displayToast}) => {
   const handleEditTask = async () => {
     try {
       // console.log('edit', editTask)
-      if(editTask.customNoti.value < 0) {
+      if (editTask.customNoti.value < 0) {
         // toast.error('The value must be positive')
         displayToast('The value must be positive', false);
         return
@@ -95,11 +95,11 @@ const TaskList = ({displayToast}) => {
       }
       const response = await axios.put(
         `http://localhost:3000/api/tasks/${editTask._id}/user/${userId}`,
-         editTask,{
-          headers: {
-            token: `Bearer ${token}`
-          }
-         });
+        editTask, {
+        headers: {
+          token: `Bearer ${token}`
+        }
+      });
       setTasks(tasks.map((task) => (task._id === editTask._id ? response.data.data : task)));
       setEditTask(null);
       setEditPopupOpen(false);
@@ -112,7 +112,7 @@ const TaskList = ({displayToast}) => {
       displayToast('Error editing task', false)
     }
   };
-  
+
 
   const handleDeleteTask = async (taskId) => {
     try {
@@ -163,18 +163,18 @@ const TaskList = ({displayToast}) => {
         )
       );
 
-      await axios.put(`http://localhost:3000/api/tasks/${taskId}/user/${userId}`, 
-        {completed: updatedCompletedStatus}, {
-          headers: {
-            token: `Bearer ${token}`
-          }
-        });
-      if(updatedCompletedStatus) {
+      await axios.put(`http://localhost:3000/api/tasks/${taskId}/user/${userId}`,
+        { completed: updatedCompletedStatus }, {
+        headers: {
+          token: `Bearer ${token}`
+        }
+      });
+      if (updatedCompletedStatus) {
         // toast.success('Congratulation, you have done your job!');
-      displayToast('Congratulation, you have done your job!', true)
+        displayToast('Congratulation, you have done your job!', true)
       } else
         // toast.error('Please finish your job!');
-      displayToast('Please finish your job!', false)
+        displayToast('Please finish your job!', false)
     } catch (error) {
       console.error('Error marking task as complete:', error.message);
       // toast.error('Error marking task as complete');
@@ -188,7 +188,7 @@ const TaskList = ({displayToast}) => {
     );
     setDisplayedTasks(filteredResults)
   };
-  
+
 
   return (
     <div className="task-list-container">
@@ -201,7 +201,7 @@ const TaskList = ({displayToast}) => {
           }}
           onClick={handleSearch}
         >
-          Tìm kiếm
+          Search
         </button>
         <input
           type="text"
@@ -216,13 +216,13 @@ const TaskList = ({displayToast}) => {
           className='add-task'
           onClick={() => setAddPopupOpen(true)}
         >
-            Thêm
+          Add
         </button>
         <button
           className='delete-all-task'
           onClick={handleDeleteAllTasks}
         >
-            Xoá tất cả
+          Delete All
         </button>
       </div>
 
@@ -245,22 +245,29 @@ const TaskList = ({displayToast}) => {
             </div>
 
             <button
-            style={{
-              backgroundColor: '#4caf50',
-              color: 'white',
-            }}
-            onClick={() => {
-              const taskId = task._id;
-              setEditTask(tasks.find(task => task._id === taskId));
-              setEditPopupOpen(true);
-            }}>Sửa</button>
+              style={{
+                backgroundColor: '#4caf50',
+                color: 'white',
+              }}
+              onClick={() => {
+                const taskId = task._id;
+                setEditTask(tasks.find(task => task._id === taskId));
+                setEditPopupOpen(true);
+              }}
+            >
+              Edit
+            </button>
 
-            <button 
-            style={{
-              backgroundColor: '#4caf50',
-              color: 'white',
-            }}
-            onClick={() => handleDeleteTask(task._id)}>Xoá</button>
+            <button
+              style={{
+                backgroundColor: '#4caf50',
+                color: 'white',
+                backgroundColor: '#FF5758'
+              }}
+              onClick={() => handleDeleteTask(task._id)}
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>
