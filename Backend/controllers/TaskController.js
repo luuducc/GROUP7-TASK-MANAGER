@@ -81,4 +81,14 @@ exports.deleteTask = async (req, res) => {
   }
 };
 
-
+// ADMIN HERE!!
+exports.createTaskForAdmin = async (req, res) => {
+  try {
+    console.log("hello", req.userId)
+    const task = await taskService.createTaskForAdmin(req.body, req.userId);
+    res.json({ status: "success", data: task });
+  } catch (err) {
+    console.log(err.message)
+    res.status(500).json({ error: err.message });
+  }
+};

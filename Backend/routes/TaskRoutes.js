@@ -3,9 +3,12 @@ const router = express.Router();
 
 const {
   getAllTasks, createTask, getTaskById, updateTask, deleteTask, getTaskByTitle, deleteAllTask,
+  createTaskForAdmin
 } = require("../controllers/TaskController");
 
-const {verifyTokenAndUser} = require("../controllers/verifyToken");
+const {verifyTokenAndUser, verifyTokenAndAdmin} = require("../controllers/verifyToken");
+
+const {getUserByEmail} = require('../controllers/userController')
 
 router.route("/user/:id")
   .get(verifyTokenAndUser, getAllTasks)
@@ -18,5 +21,9 @@ router.route("/:taskId/user/:id")
   .get(verifyTokenAndUser, getTaskById)
   .put(verifyTokenAndUser, updateTask)
   .delete(verifyTokenAndUser, deleteTask);
+
+// ADMIN HERE!!
+router.route('/admin/:id')
+  .post(verifyTokenAndUser, verifyTokenAndAdmin, getUserByEmail, createTaskForAdmin)
 
 module.exports = router;

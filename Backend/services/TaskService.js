@@ -4,7 +4,7 @@ exports.getAllTasks = async (userId) => {
   return await TaskModel.find({user: userId})
     .sort('-createdAt')
     // .populate('user', 'username') // get related informations of it's user
-    .populate({ path: 'user', select: 'username'}) // the same way to populate
+    .populate({ path: 'user', select: 'username email'}) // the same way to populate
     .exec()
     .then(tasks => //sort properties in custom order
       tasks.map(({ 
@@ -50,4 +50,8 @@ exports.deleteTask = async (taskId) => {
     .populate({ path: 'user', select: 'username'});
 };
 
-
+// ADMIN HERE!!
+exports.createTaskForAdmin = async (task, userId) => {
+  const newTask = await TaskModel.create({...task, user: userId})
+    return newTask.populate({ path: 'user', select: 'username'});
+};

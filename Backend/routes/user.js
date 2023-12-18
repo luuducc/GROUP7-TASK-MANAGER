@@ -14,6 +14,9 @@ router.get("/getAll", verifyToken, userController.getAllUsers);
 //GET USER BY ID
 router.get("/getUserByID/:id",  verifyTokenAndUser, userController.getUserByID);
 
+// GET USER BY EMAIL
+router.get("/getUserByID/:id/email",  verifyTokenAndUser, userController.getUserByEmail);
+
 //DELETE USER
 router.delete("/delete/:id", verifyTokenAndUserAuthorization, userController.deleteUser);
 
