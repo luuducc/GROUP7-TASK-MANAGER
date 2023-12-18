@@ -1,23 +1,11 @@
 const express = require("express");
+const router = express.Router();
+
 const {
-  getAllTasks,
-  createTask,
-  getTaskById,
-  updateTask,
-  deleteTask,
-  getTaskByTitle, 
-  deleteAllTask,
-  getTaskByUser
+  getAllTasks, createTask, getTaskById, updateTask, deleteTask, getTaskByTitle, deleteAllTask,
 } = require("../controllers/TaskController");
 
-const {
-  verifyToken,
-  verifyTokenAndAdmin,
-  verifyTokenAndUserAuthorization,
-  verifyTokenAndUser,
-} = require("../controllers/verifyToken");
-
-const router = express.Router();
+const {verifyTokenAndUser} = require("../controllers/verifyToken");
 
 router.route("/user/:id")
   .get(verifyTokenAndUser, getAllTasks)
@@ -30,8 +18,5 @@ router.route("/:taskId/user/:id")
   .get(verifyTokenAndUser, getTaskById)
   .put(verifyTokenAndUser, updateTask)
   .delete(verifyTokenAndUser, deleteTask);
-
-
-router.route("/user/:user").get(getTaskByUser); // temporary API
 
 module.exports = router;

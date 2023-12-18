@@ -14,7 +14,7 @@ exports.getAllTasks = async (userId) => {
       }))
     )
     .catch(err => {
-      console.error("err in get all task:", err)
+      console.error("err in get all tasks:", err)
     })
 };
 
@@ -34,11 +34,6 @@ exports.getTaskById = async (id) => {
 };
 exports.getTaskByTitle = async (title) => {
   return await TaskModel.find({ title })
-    .populate({ path: 'user', select: 'username'})
-};
-
-exports.getTaskByUser = async (user) => {
-  return await TaskModel.find({ user })
     .populate({ path: 'user', select: 'username'})
 };
 
