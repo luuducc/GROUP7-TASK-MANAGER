@@ -96,7 +96,6 @@ const Todolist = () => {
             color: 'white',
             margin: '0px',
             width: '100px',
-            // padding: '0px'
           }}
         >
           Add
