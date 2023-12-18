@@ -204,6 +204,9 @@ const TaskList = ({ displayToast }) => {
           Search
         </button>
         <input
+        style={{
+          padding: '10px',
+        }}
           type="text"
           placeholder="Search by title..."
           value={searchQuery}
