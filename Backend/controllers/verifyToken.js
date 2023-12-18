@@ -14,7 +14,7 @@ const verifyToken = (req, res, next) => {
       next();
     });
   } else {
-    res.status(401).json("Please require a token!!");
+    res.status(401).json("Please provide a token!!");
   }
 };
 

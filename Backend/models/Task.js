@@ -1,19 +1,15 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// TaskSchema : title, createdAt, image, content
-// CRUD
-// từ dữ liệu json sẽ xây dựng lên giao diện,
 const taskSchema = new Schema({
-  // _id: Schema.Types.ObjectId,
-  workspace: {
-    type: Schema.Types.ObjectId,
-    ref: 'Workspace'
-  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true
+  },
+  workspace: {
+    type: Schema.Types.ObjectId,
+    ref: 'Workspace'
   },
   title: {
     type: String,
