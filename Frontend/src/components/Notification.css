@@ -9,7 +9,7 @@ body {
 .Notification-container {
     height: 600px;
     overflow-y: auto;
-    width: 832px;
+    width: 800px;
     margin-top: 50px;
     background-color: #fff;
     padding: 20px;
