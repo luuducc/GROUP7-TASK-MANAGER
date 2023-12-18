@@ -5,19 +5,17 @@ import { Box } from '@chakra-ui/react';
 import './Profile.css';
 import React, { useState } from 'react';
 import axios from 'axios';
-import { getUserData } from '../userStorage';
 
 const EditInformation = ({ onClose, displayToast }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [newpassword, setNewPassword] = useState('');
 
-    const userId = getUserData()._id;
+    const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
 
     const handleSaveChanges = async () => {
         try {
-            
             await axios.post(`http://localhost:3000/user/checkPass/${userId}`, {
                 password,
             }, {
@@ -36,11 +34,9 @@ const EditInformation = ({ onClose, displayToast }) => {
                 }
             });
 
-            // toast.success('Changes saved successfully');
             displayToast('Changes saved successfully', true)
             onClose();
         } catch (error) {
-            // toast.error('Edit failed!');
             displayToast('Edit failed!', false)
         }
         onClose();

@@ -1,60 +1,88 @@
 import React, { useState, useEffect } from 'react';
 import './Notification.css';
-import { getUserData } from '../userStorage';
-import { v4 as uuidv4 } from 'uuid' // to get the unique value despite the concurrent requests
+import { v4 as uuidv4 } from 'uuid';
 
 const Notification = () => {
   const [notifications, setNotifications] = useState([]);
-  const userId = getUserData()._id
-  // console.log("hello", userId)
+
   useEffect(() => {
-    const eventSource = new EventSource(`http://localhost:3000/events/${userId}`) // connect to /events api
-    eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data) ;
-      console.log('data', data)
-      console.log('Received data from SSE:', data);
-      console.log('message', data.message);
-      console.log('noti:', data.name);
+    // Load notifications from localStorage
+    const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
+    setNotifications(storedNotifications);
 
-      addNotification(data.message, data.name);
-    }
+    // Start interval for updating elapsed time (optional)
+    const intervalId = setInterval(() => {
+      updateElapsedTime();
+    }, 60000);
 
-    eventSource.onerror = (error) => {
-      console.error('SSE Error: ', error);
-      eventSource.close();
-    }
     return () => {
-      eventSource.close();
-    }
-  }, [])
+      clearInterval(intervalId); // Clear interval on component unmount
+    };
+  }, []);
 
   const addNotification = (message, name) => {
     const newNotification = {
-      // get multi responses from server => id can have the same value!!
-      // id: Date.now(), 
       id: uuidv4(),
       message,
       name,
+      timestamp: Date.now(),
     };
 
-    setNotifications(prevNotifications => [...prevNotifications, newNotification]);
-    console.log("noti",notifications)
+    setNotifications((prevNotifications) => {
+      const updatedNotifications = [newNotification, ...prevNotifications];
+      // Save updated notifications to localStorage
+      localStorage.setItem('notifications', JSON.stringify(updatedNotifications));
+      return updatedNotifications;
+    });
   };
 
   const removeNotification = (id) => {
-    setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== id));
+    setNotifications((prevNotifications) =>
+      prevNotifications.filter((notification) => notification.id !== id)
+    );
+    // Update localStorage after removing a notification
+    localStorage.setItem(
+      'notifications',
+      JSON.stringify(notifications.filter((notification) => notification.id !== id))
+    );
+  };
+
+  const updateElapsedTime = () => {
+    setNotifications((prevNotifications) => {
+      return prevNotifications.map((notification) => ({
+        ...notification,
+        elapsedTime: calculateTimeElapsed(notification.timestamp),
+      }));
+    });
+  };
+
+  const calculateTimeElapsed = (timestamp) => {
+    const currentTime = Date.now();
+    const timeDifference = currentTime - timestamp;
+    const seconds = Math.floor(timeDifference / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+
+    if (hours > 0) {
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    } else if (minutes > 0) {
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    } else {
+      return `now`;
+    }
   };
 
   return (
     <div className="Notification-container">
       <h2>Notification</h2>
       <ul className="notification-list">
-        {notifications.map(notification => (
+        {notifications.map((notification) => (
           <li key={notification.id} className="notification-item">
             <div className='content'>
               <strong>{notification.name}</strong>
               <div>{notification.message}</div>
-            </div>         
+              <div style={{ color: '#0766FF' }}>{notification.elapsedTime}</div>
+            </div>
             <button onClick={() => removeNotification(notification.id)}>
               Delete
             </button>

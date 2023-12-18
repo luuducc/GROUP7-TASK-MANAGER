@@ -5,16 +5,24 @@ import { Button, Modal, useDisclosure } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
 import './Profile.css';
 import EditInformation from './EditInformation';
+import DeleteAccount from './DeleteAccount';
 import { useNavigate } from 'react-router-dom';
-import { getUserData } from '../userStorage';
+import axios from 'axios';
 
 const Profile = ({displayToast}) => {
-  let userData = getUserData();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
+  const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
+  const [userData, setUserData] = useState({});
+  const userId = localStorage.getItem('userId');
+  const token = localStorage.getItem('token');
   const navigate = useNavigate();
-
+  
   const handleEditClick = () => {
-    onOpen();
+    onEditOpen();
+  };
+
+  const handleDeleteClick = () => {
+    onDeleteOpen();
   };
 
   const handleLogout = () => {
@@ -23,6 +31,29 @@ const Profile = ({displayToast}) => {
   
     navigate('/');
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/user/getUserByID/${userId}`, {
+          headers: {
+            token: `Bearer ${token}`,
+          },
+        });
+        const data = response.data;
+        setUserData(data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    if (userId) {
+      fetchUserData();
+    }
+  }, [userId, token]);
+
+  
+  
 
   return (
     <div className="profile-container">
@@ -49,11 +80,24 @@ const Profile = ({displayToast}) => {
           justifyContent='center'
           mt={3}
         >
-          <Button 
-            colorScheme='blue'
-            onClick={handleEditClick}
+        <Button 
+          colorScheme='blue'
+          onClick={handleEditClick}
+        >
+          Edit Information
+        </Button>
+        </Box>
+
+        <Box
+          display='flex'
+          justifyContent='center'
+          mt={3}
+        >
+          <Button
+            colorScheme='red'
+            onClick={handleDeleteClick}
           >
-            Edit Information
+            Delete Account
           </Button>
         </Box>
 
@@ -62,16 +106,20 @@ const Profile = ({displayToast}) => {
           justifyContent='center'
           mt={3}
         >
-          <Button 
+          <Button
             colorScheme='blue'
             onClick={handleLogout}
           >
             Logout
           </Button>
         </Box>
+        
+        <Modal isOpen={isEditOpen} onClose={onEditClose}>
+          <EditInformation onClose={onEditClose} displayToast={displayToast} />
+        </Modal>
 
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <EditInformation onClose={onClose} displayToast={displayToast} />
+        <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
+          <DeleteAccount onClose={onDeleteClose} displayToast={displayToast} />
         </Modal>
       </div>
     </div>
