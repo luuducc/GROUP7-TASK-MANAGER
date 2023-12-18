@@ -32,7 +32,6 @@ const userController = {
           // because email is unique => only 1 user is returned => array has length 1
           const userId = user[0]._id.toHexString() 
           req.userId = userId
-          console.log('done get user by email')
           next()
           // return res.status(200).json(user);
         } else {
