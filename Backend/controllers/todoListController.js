@@ -1,80 +1,47 @@
-const TodoList = require("../models/TodoList");
-const User = require("../models/User");
-const jwt = require("jsonwebtoken");
-const {
-  verifyToken,
-  verifyTokenAndAdmin,
-  verifyTokenAndUserAuthorization,
-  verifyTokenAndUser,
-} = require("../controllers/verifyToken");
+const todoListService = require('../services/TodoListService')
 
-const todoListController = {
-
-  // CREATE TODOLIST
-  createTodoList: async (req, res) => {
-    try {
-      //Create new todo
-      console.log("check")
-      console.log(req.body);
-      const newTodoList = await new TodoList({
-        user: req.body.user,
-        title: req.body.title,
-        body: req.body.body,
-      });
-
-      //Save todoList to DB
-      const todoList = await newTodoList.save();
-      res.status(200).json(todoList);
-
-    } catch (err) {
-      res.status(500).json(err);
-      console.log(err.message)
-    }
-  },
-
-  // GET ALL TODOLIST
-  getAllTodoList: async (req, res) => {
-    try {
-      const todoList = await TodoList.find({ user: req.params.id });
-      res.status(200).json(todoList);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  },
-
-  //DELETE TODOLIST BY ID
-  deleteTodoList: async (req, res) => {
-    try {
-      await TodoList.findByIdAndDelete(req.params.idTodo);
-      res.status(200).json("TodoList deleted");
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  },
-
-  //UPDATETODO
-  updateTodoList: async (req, res) => {
-    try {
-      const change = await TodoList.findByIdAndUpdate(
-        req.params.idTodo,
-        {
-          title: req.body.title,
-          body: req.body.body,
-          completed: req.body.completed
-        },
-        { new: true }
-      );
-
-      if (!change) {
-        return res.status(404).json({ error: "TodoList not found" });
-      }
-      res.status(200).json(change);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  },
-
-
+exports.createTodoList = async (req, res) => {
+  try {
+    const todoList = await todoListService.createTodoList(req.params.id, req.body);
+    res.json({ status: "success", data: todoList });
+  } catch (err) {
+    console.log(err.message)
+    res.status(500).json({ error: err.message });
+  }
 };
 
-module.exports = todoListController;
+exports.getAllTodoLists = async (req, res) => {
+  try {
+    const todoLists = await todoListService.getAllTodoLists(req.params.id);
+    res.json({ status: "success", count: todoLists.length, data: todoLists });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateTodoList = async (req, res) => {
+  try {
+    const todoList = await todoListService.updateTodoList(req.params.todoListId, req.body);
+    if(todoList) {
+      res.json({ status: "success", data: todoList });
+    } else {
+      return res.status(404).json({ msg: `No todoList with id ${req.params.todoListId}`})
+    }
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: err.message }); 
+  }
+};
+exports.deleteTodoList = async (req, res) => {
+  try {
+    const todoList = await todoListService.deleteTodoList(req.params.todoListId);
+    if(todoList) {
+      res.json({ status: "success", data: todoList });
+    } else {
+      return res.status(404).json({ msg: `No todoList with id ${req.params.todoListId}`})
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+

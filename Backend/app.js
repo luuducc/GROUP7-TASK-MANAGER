@@ -2,9 +2,9 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const taskRouter = require("./routes/TaskRoutes");
+const todoListRouter = require("./routes/TodoListRoutes");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/user");
-const todoList = require("./routes/todoList");
 const workspace = require("./routes/workspace");
 const taskProject = require("./routes/taskProject");
 
@@ -21,9 +21,9 @@ app.use(express.static('./public'))
   
 //Routes
 app.use("/api/tasks", taskRouter); 
+app.use("/todo", todoListRouter);
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
-app.use("/todo", todoList);
 app.use("/workspace", workspace);
 //app.use("/taskProject". taskProject);
 

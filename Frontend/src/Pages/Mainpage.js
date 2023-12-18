@@ -6,7 +6,7 @@ import Todolist from '../components/Todolist';
 import Profile from '../components/Profile';
 import Workspace from '../components/Workspace';
 import Notification from '../components/Notification';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Center, AbsoluteCenter } from '@chakra-ui/react'
 
@@ -19,8 +19,6 @@ const Header = () => {
     }
   }
   return (
-    <React.Fragment>
-      <ToastContainer />
       <Tabs variant='enclosed' align='center' margin={0}>
       <TabList
         width={832}
@@ -51,7 +49,6 @@ const Header = () => {
         </TabPanel>
       </TabPanels>
     </Tabs>
-    </React.Fragment>
   );
 };
 
