@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { setUserData } from '../userStorage'; // store user info
 import { useRadio } from '@chakra-ui/react';
 
 const Login = () => {
@@ -17,12 +16,19 @@ const Login = () => {
         email,
         password,
       });
-      const { accessToken, ...userData } = response.data;
-      setUserData(userData) // store
-      localStorage.setItem('token', accessToken); // Store the token in localStorage
+      const { accessToken, userId, ...userData } = response.data;
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('userId', userData._id);
+      // console.log(userData)
+      localStorage.setItem('isAdmin', userData.isAdmin);
+      localStorage.setItem('userEmail', userData.email);
+
+      console.log('token: ', localStorage.getItem('token'));
+      console.log('userId: ', localStorage.getItem('userId'));
+
       toast.success('Login successful!');
       navigate('/main');
-      
+
     } catch (error) {
       console.error('Login failed:', error.response.data);
       toast.error('Login failed. Please check your username or password.');

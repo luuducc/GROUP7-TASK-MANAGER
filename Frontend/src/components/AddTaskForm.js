@@ -68,6 +68,7 @@ const AddTaskForm = ({ newTask, setNewTask, handleAddTask, onClose }) => {
         style={{
           backgroundColor: '#4caf50',
           color: 'white',
+          backgroundColor: '#FF5758'
         }}
         onClick={onClose}>
           Đóng

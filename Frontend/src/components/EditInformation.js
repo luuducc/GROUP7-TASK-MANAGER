@@ -2,22 +2,26 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import { Button, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
+import { Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import './Profile.css';
 import React, { useState } from 'react';
 import axios from 'axios';
-import { getUserData } from '../userStorage';
 
 const EditInformation = ({ onClose, displayToast }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [newpassword, setNewPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
-    const userId = getUserData()._id;
+    const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
+
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+      };
 
     const handleSaveChanges = async () => {
         try {
-            
             await axios.post(`http://localhost:3000/user/checkPass/${userId}`, {
                 password,
             }, {
@@ -36,11 +40,9 @@ const EditInformation = ({ onClose, displayToast }) => {
                 }
             });
 
-            // toast.success('Changes saved successfully');
             displayToast('Changes saved successfully', true)
             onClose();
         } catch (error) {
-            // toast.error('Edit failed!');
             displayToast('Edit failed!', false)
         }
         onClose();
@@ -53,32 +55,42 @@ const EditInformation = ({ onClose, displayToast }) => {
                 <ModalHeader textAlign="center">Edit Information</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <label>
-                            Username:
-                            <input
+                        <InputGroup>
+                            <Input
+                                placeholder="Username"
                                 type="text"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
-                        </label>
+                        </InputGroup>
                         <br />
-                        <label>
-                            New Password:
-                            <input
-                                type="password"
+                        <InputGroup>
+                            <Input
+                                placeholder="New Password"
+                                type={showPassword ? 'text' : 'password'}
                                 value={newpassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
                             />
-                        </label>
+                            <InputRightElement width="4.5rem">
+                                <Button h="1.75rem" size="sm" onClick={handleTogglePasswordVisibility}>
+                                {showPassword ? 'Hide' : 'Show'}
+                                </Button>
+                            </InputRightElement>
+                        </InputGroup>
                         <br />
-                        <label>
-                            Password:
-                            <input
-                                type="password"
+                        <InputGroup>
+                            <Input
+                                placeholder="Password"
+                                type={showPassword ? 'text' : 'password'}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
-                        </label>
+                            <InputRightElement width="4.5rem">
+                                <Button h="1.75rem" size="sm" onClick={handleTogglePasswordVisibility}>
+                                {showPassword ? 'Hide' : 'Show'}
+                                </Button>
+                            </InputRightElement>
+                        </InputGroup>
                         <br />
                         <Box
                             display="flex"
