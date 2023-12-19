@@ -44,7 +44,7 @@ exports.updateTask = async (taskId, task) => {
     if(findTask.inWorkspace === true) { // if task in workspace
       // user can only edit 'completed' with task in workspace
       const jsonTask = JSON.stringify(task) // convert object to string to compare
-      if(jsonTask === '{"completed":"true"}' || jsonTask === '{"completed":"false"}') {
+      if(jsonTask === '{"completed":true}' || jsonTask === '{"completed":false}') {
         // only accept changing 'completed' property
         const {completed} = task
         return await TaskModel.findByIdAndUpdate(taskId, {completed}, {new: true})
