@@ -169,12 +169,6 @@ const Workspace = ({ displayToast }) => {
     try {
       const updatedCompletedStatus = !tasks.find((task) => task._id === taskId)?.completed;
 
-      setTasks((prevTasks) =>
-        prevTasks.map((task) =>
-          task._id === taskId ? { ...task, completed: updatedCompletedStatus } : task
-        )
-      );
-
       await axios.put(`http://localhost:3000/api/tasks/${taskId}/user/${userId}`,
         { completed: updatedCompletedStatus }, {
         headers: {
@@ -182,6 +176,12 @@ const Workspace = ({ displayToast }) => {
         }
       });
 
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task._id === taskId ? { ...task, completed: updatedCompletedStatus } : task
+        )
+      );
+      
       if (updatedCompletedStatus) {
         // toast.success('Congratulation, you have done your job!');
         displayToast('Congratulation, you have done your job!', true)
@@ -189,9 +189,9 @@ const Workspace = ({ displayToast }) => {
         // toast.error('Please finish your job!');
         displayToast('Please finish your job!', false)
     } catch (error) {
-      console.error('Error marking task as complete:', error.message);
+      console.error('Error marking task as complete:', error.response.data.msg);
       // toast.error('Error marking task as complete');
-      displayToast('Error marking task as complete:', false)
+      displayToast('You do not own this task!', false)
     }
   };
 
