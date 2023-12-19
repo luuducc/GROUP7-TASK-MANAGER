@@ -28,7 +28,7 @@ const Profile = ({displayToast}) => {
   const handleLogout = () => {
     localStorage.removeItem('userId');
     localStorage.removeItem('token');
-  
+    localStorage.removeItem('notifications');
     navigate('/');
   };
 

@@ -22,9 +22,19 @@ const TaskList = ({ displayToast }) => {
   const userId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');
 
-  // new code
   const [displayedTasks, setDisplayedTasks] = useState([]);
   useEffect(() => {
+    setDisplayedTasks(tasks);
+  }, [tasks]);
+
+  useEffect(() => {
+    const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    setTasks(storedTasks);
+  }, []);
+
+  // Save tasks to localStorage whenever tasks change
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
     setDisplayedTasks(tasks);
   }, [tasks]);
 
@@ -204,9 +214,9 @@ const TaskList = ({ displayToast }) => {
           Search
         </button>
         <input
-        style={{
-          padding: '10px',
-        }}
+          style={{
+            padding: '10px',
+          }}
           type="text"
           placeholder="Search by title..."
           value={searchQuery}
