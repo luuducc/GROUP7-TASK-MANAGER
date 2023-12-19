@@ -21,6 +21,8 @@ const Workspace = ({ displayToast }) => {
 
   const userId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');
+  const isAdmin = localStorage.getItem('isAdmin');
+  const isAdminBoolean = (isAdmin == 'true') ? true : false;
   // const userData = JSON.parse(localStorage.getItem('token'));
   // console.log(userData)
   const [displayedTasks, setDisplayedTasks] = useState([]);
@@ -231,18 +233,22 @@ const Workspace = ({ displayToast }) => {
       </div>
 
       <div className='add-delete'>
-        <button
-          className='add-task'
-          onClick={() => setAddPopupOpen(true)}
-        >
-          Add
-        </button>
-        <button
-          className='delete-all-task'
-          onClick={handleDeleteAllTasks}
-        >
-          Delete All
-        </button>
+        { isAdminBoolean && (
+            <button
+              className='add-task'
+              onClick={() => setAddPopupOpen(true)}
+            >
+              Add
+            </button>
+        )}
+        { isAdminBoolean && (
+            <button
+              className='delete-all-task'
+              onClick={handleDeleteAllTasks}
+            >
+              Delete All
+            </button>
+        )}
       </div>
 
       <ul className="task-list">
@@ -263,30 +269,34 @@ const Workspace = ({ displayToast }) => {
               />
             </div>
 
-            <button
-              style={{
-                backgroundColor: '#4caf50',
-                color: 'white',
-              }}
-              onClick={() => {
-                const taskId = task._id;
-                setEditTask(tasks.find(task => task._id === taskId));
-                setEditPopupOpen(true);
-              }}
-            >
-              Edit
-            </button>
+            { isAdminBoolean && (
+              <button
+                style={{
+                  backgroundColor: '#4caf50',
+                  color: 'white',
+                }}
+                onClick={() => {
+                  const taskId = task._id;
+                  setEditTask(tasks.find(task => task._id === taskId));
+                  setEditPopupOpen(true);
+                }}
+              >
+                Edit
+              </button>
+            )}
 
-            <button
-              style={{
-                backgroundColor: '#4caf50',
-                color: 'white',
-                backgroundColor: '#FF5758'
-              }}
-              onClick={() => handleDeleteTask(task._id)}
-            >
-              Delete
-            </button>
+            { isAdminBoolean && (
+              <button
+                style={{
+                  backgroundColor: '#4caf50',
+                  color: 'white',
+                  backgroundColor: '#FF5758'
+                }}
+                onClick={() => handleDeleteTask(task._id)}
+              >
+                Delete
+              </button>
+            )}
           </li>
         ))}
       </ul>
