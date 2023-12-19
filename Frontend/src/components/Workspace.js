@@ -22,6 +22,7 @@ const Workspace = ({ displayToast }) => {
   const userId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');
   const isAdmin = localStorage.getItem('isAdmin');
+  const userEmail = localStorage.getItem('userEmail')
   const isAdminBoolean = (isAdmin == 'true') ? true : false;
   // const userData = JSON.parse(localStorage.getItem('token'));
   // console.log(userData)
@@ -55,7 +56,7 @@ const Workspace = ({ displayToast }) => {
             }
           }
         );
-        console.log(response.data.data)
+        // console.log(response.data.data)
         setTasks(response.data.data);
       } catch (error) {
         console.error('Error fetching tasks:', error.message);
@@ -67,9 +68,11 @@ const Workspace = ({ displayToast }) => {
 
   const handleAddTask = async () => {
     try {
-      // console.log('new', newTask)
-      if (newTask.customNoti.value < 0) {
-        // toast.error('The value must be positive')
+      if(newTask.email === userEmail) {
+        displayToast('Please enter your student email', false);
+        return
+      }
+      if(newTask.customNoti.value < 0) {
         displayToast('The value must be positive', false);
         return
       }
@@ -107,7 +110,7 @@ const Workspace = ({ displayToast }) => {
       const response = await axios.put(
         // `http://localhost:3000/api/tasks/${editTask._id}/user/${userId}`,
         `http://localhost:3000/api/tasks/${editTask._id}/admin/`,
-        { ...editTask, email: localStorage.getItem('userEmail') }, {
+        { ...editTask, userEmail }, {
         headers: {
           token: `Bearer ${token}`
         }
@@ -169,25 +172,42 @@ const Workspace = ({ displayToast }) => {
     try {
       const updatedCompletedStatus = !tasks.find((task) => task._id === taskId)?.completed;
 
-      await axios.put(`http://localhost:3000/api/tasks/${taskId}/user/${userId}`,
-        { completed: updatedCompletedStatus }, {
-        headers: {
-          token: `Bearer ${token}`
-        }
-      });
+      if(isAdminBoolean) { // admin will point to different route
+        await axios.put(`http://localhost:3000/api/tasks/${taskId}/admin`,
+          { completed: updatedCompletedStatus }, {
+            headers: {
+              token: `Bearer ${token}`
+            }
+        });
+      } else {
+        await axios.put(`http://localhost:3000/api/tasks/${taskId}/user/${userId}`,
+          { completed: updatedCompletedStatus }, {
+            headers: {
+              token: `Bearer ${token}`
+            }
+        });
+      }
+      
 
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
           task._id === taskId ? { ...task, completed: updatedCompletedStatus } : task
         )
       );
-      
+
       if (updatedCompletedStatus) {
-        // toast.success('Congratulation, you have done your job!');
-        displayToast('Congratulation, you have done your job!', true)
-      } else
-        // toast.error('Please finish your job!');
-        displayToast('Please finish your job!', false)
+        if(isAdminBoolean) {
+          displayToast('Your student has completed the task', true)
+        } else {
+          displayToast('Congratulation, you have done your task!', true)
+        }
+      } else {
+        if(isAdminBoolean) {
+          displayToast('Your student has not completed the task', false)
+        } else {
+          displayToast('Please finish your task!', false)
+        }
+      }
     } catch (error) {
       console.error('Error marking task as complete:', error.response.data.msg);
       // toast.error('Error marking task as complete');
