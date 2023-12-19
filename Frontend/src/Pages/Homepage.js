@@ -25,7 +25,7 @@ const Homepage = () => {
         borderRadius='lg'
         borderWidth='1px'
       >
-      <Text textAlign='center' fontSize='3xl' fontFamily='Work sans'>To Do List</Text> 
+      <Text textAlign='center' fontSize='3xl' fontFamily='Work sans'>Notion</Text> 
       </Box>
       <Box bg='white' w='100%' p={4} borderRadius='lg' borderWidth='1px'>
         <Tabs variant='enclosed'>
