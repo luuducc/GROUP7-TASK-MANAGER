@@ -9,25 +9,24 @@ const Notification = () => {
   
 
   const userId = localStorage.getItem('userId');
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');  
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/tasks/user/${userId}`,
-          {
-            headers: {
-              token: `Bearer ${token}`
-            }
+        const response = await axios.get(`http://localhost:3000/api/tasks/user/${userId}`, {
+          headers: {
+            token: `Bearer ${token}`
           }
-        );
-        setStoredTasks(response.data.data);
+        });
+        setStoredTasks(prevTasks => response.data.data);
       } catch (error) {
         console.error('Error fetching tasks:', error.message);
       }
     };
-
+  
     fetchTasks();
-  })
+  }, [userId, token]);
+  
 
   useEffect(() => {
     if (storedTasks && storedTasks.length > 0) {

@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const TaskList = ({ displayToast }) => {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState({
+    email: '',
     title: '',
     body: '',
     image: '',
