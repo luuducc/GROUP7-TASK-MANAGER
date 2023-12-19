@@ -56,14 +56,14 @@ exports.getTaskByTitle = async (req, res) => {
 
 exports.updateTask = async (req, res) => {
   try {
-    const task = await taskService.updateTask(req.params.taskId, req.body);
-    if(!task.errorCode) {
+    const task = await taskService.updateTask(req.params.taskId, req.params.id, req.body);
+    if(!task.errorCode) { // find task succeeded
       res.json({ status: "success", data: task });
     } else {
       if(task.msg === '') {
         return res.status(404).json({ msg: `No task with id ${req.params.taskId}`})
       } else {
-        return res.status(404).json({ msg: task.msg})
+        return res.status(403).json({ msg: task.msg})
       }
     }
   } catch (err) {
