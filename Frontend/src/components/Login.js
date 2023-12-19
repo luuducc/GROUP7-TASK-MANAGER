@@ -19,13 +19,16 @@ const Login = () => {
       const { accessToken, userId, ...userData } = response.data;
       localStorage.setItem('token', accessToken);
       localStorage.setItem('userId', userData._id);
+      // console.log(userData)
+      localStorage.setItem('isAdmin', userData.isAdmin);
+      localStorage.setItem('userEmail', userData.email);
 
-      console.log('token: ',  localStorage.getItem('token'));
+      console.log('token: ', localStorage.getItem('token'));
       console.log('userId: ', localStorage.getItem('userId'));
 
       toast.success('Login successful!');
       navigate('/main');
-      
+
     } catch (error) {
       console.error('Login failed:', error.response.data);
       toast.error('Login failed. Please check your username or password.');

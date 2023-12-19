@@ -15,7 +15,7 @@ const tabListStyle = {
   display: 'flex',
   justifyContent: 'space-around',
   alignItems: 'center',
-  background: '#2c3e50', 
+  background: '#2c3e50',
   color: '#ecf0f1',
   padding: '10px',
   margin: '0 16px',
@@ -35,16 +35,16 @@ const tabHoverStyle = {
 
 const Header = () => {
   const displayToast = (message, type) => {
-    if(type === true) { // success
+    if (type === true) { // success
       toast.success(message)
     } else {
       toast.error(message)
     }
   }
   return (
-      <Tabs variant='enclosed' align='center' margin={0}>
+    <Tabs variant='enclosed' align='center' margin={0}>
       <TabList
-        position={'fixed'} 
+        position={'fixed'}
         zIndex={10}
         style={tabListStyle}
       >
@@ -56,19 +56,19 @@ const Header = () => {
       </TabList>
       <TabPanels align='start'>
         <TabPanel>
-          <TaskList displayToast={displayToast}/>
+          <TaskList displayToast={displayToast} />
         </TabPanel>
         <TabPanel>
-          <Todolist displayToast={displayToast}/> 
+          <Todolist displayToast={displayToast} />
         </TabPanel>
         <TabPanel>
-          <Workspace/> 
+          <Workspace displayToast={displayToast} />
         </TabPanel>
         <TabPanel>
-          <Notification/> 
+          <Notification />
         </TabPanel>
         <TabPanel>
-          <Profile displayToast={displayToast}/> 
+          <Profile displayToast={displayToast} />
         </TabPanel>
       </TabPanels>
     </Tabs>

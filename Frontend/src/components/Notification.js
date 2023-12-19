@@ -1,10 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import './Notification.css';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 const Notification = () => {
   const [notifications, setNotifications] = useState([]);
-  const [storedTasks, setStoredTasks] = useState(JSON.parse(localStorage.getItem('tasks')));
+  const [storedTasks, setStoredTasks] = useState();
+  
+
+  const userId = localStorage.getItem('userId');
+  const token = localStorage.getItem('token');
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/tasks/user/${userId}`,
+          {
+            headers: {
+              token: `Bearer ${token}`
+            }
+          }
+        );
+        setStoredTasks(response.data.data);
+      } catch (error) {
+        console.error('Error fetching tasks:', error.message);
+      }
+    };
+
+    fetchTasks();
+  })
 
   useEffect(() => {
     if (storedTasks && storedTasks.length > 0) {
