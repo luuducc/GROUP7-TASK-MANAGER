@@ -4,88 +4,73 @@ import { v4 as uuidv4 } from 'uuid';
 
 const Notification = () => {
   const [notifications, setNotifications] = useState([]);
+  const [storedTasks, setStoredTasks] = useState(JSON.parse(localStorage.getItem('tasks')));
 
   useEffect(() => {
-    // Load notifications from localStorage
-    const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
-    setNotifications(storedNotifications);
-
-    // Start interval for updating elapsed time (optional)
-    const intervalId = setInterval(() => {
-      updateElapsedTime();
-    }, 60000);
-
-    return () => {
-      clearInterval(intervalId); // Clear interval on component unmount
-    };
-  }, []);
-
-  const addNotification = (message, name) => {
-    const newNotification = {
-      id: uuidv4(),
-      message,
-      name,
-      timestamp: Date.now(),
-    };
-
-    setNotifications((prevNotifications) => {
-      const updatedNotifications = [newNotification, ...prevNotifications];
-      // Save updated notifications to localStorage
-      localStorage.setItem('notifications', JSON.stringify(updatedNotifications));
-      return updatedNotifications;
-    });
-  };
-
-  const removeNotification = (id) => {
-    setNotifications((prevNotifications) =>
-      prevNotifications.filter((notification) => notification.id !== id)
-    );
-    // Update localStorage after removing a notification
-    localStorage.setItem(
-      'notifications',
-      JSON.stringify(notifications.filter((notification) => notification.id !== id))
-    );
-  };
-
-  const updateElapsedTime = () => {
-    setNotifications((prevNotifications) => {
-      return prevNotifications.map((notification) => ({
-        ...notification,
-        elapsedTime: calculateTimeElapsed(notification.timestamp),
+    if (storedTasks && storedTasks.length > 0) {
+      const newNotifications = storedTasks.map((element) => ({
+        title: element.title,
+        id: element._id,
+        body: element.body,
+        expiredDate: element.expiredDate,
+        customNoti: element.customNoti,
+        elapsedTime: calculateTimeElapsed(element.expiredDate),
+        isExpired: isTaskExpired(element.expiredDate)
       }));
-    });
-  };
 
-  const calculateTimeElapsed = (timestamp) => {
+      setNotifications(newNotifications);
+    }
+  }, [storedTasks]);
+
+  useEffect(() => {
+    localStorage.setItem('notifications', JSON.stringify(notifications));
+  }, [notifications]);
+
+  const calculateTimeElapsed = (expiredDate) => {
     const currentTime = Date.now();
-    const timeDifference = currentTime - timestamp;
+    const expirationTime = new Date(expiredDate).getTime();
+    const timeDifference = expirationTime - currentTime;
     const seconds = Math.floor(timeDifference / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
 
-    if (hours > 0) {
-      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    } else if (minutes > 0) {
-      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    if (seconds > 0) {
+      return `${seconds} second${seconds > 1 ? 's' : ''} left`;
     } else {
-      return `now`;
+      return `less than a second left`;
     }
   };
+
+  const isTaskExpired = (expiredDate) => {
+    const currentTime = Date.now();
+    const expirationTime = new Date(expiredDate).getTime();
+    return currentTime > expirationTime;
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      // Update elapsedTime and check if task is expired for each notification
+      const updatedNotifications = notifications.map((notification) => ({
+        ...notification,
+        elapsedTime: calculateTimeElapsed(notification.expiredDate),
+        isExpired: isTaskExpired(notification.expiredDate)
+      }));
+
+      setNotifications(updatedNotifications);
+    }, 5000);
+
+    return () => clearInterval(intervalId); // Clear interval on component unmount
+  }, [notifications]);
 
   return (
     <div className="Notification-container">
       <h2>Notification</h2>
       <ul className="notification-list">
         {notifications.map((notification) => (
-          <li key={notification.id} className="notification-item">
+          <li key={notification.id} className={`notification-item ${notification.isExpired ? 'expired' : ''}`}>
             <div className='content'>
-              <strong>{notification.name}</strong>
-              <div>{notification.message}</div>
-              <div style={{ color: '#0766FF' }}>{notification.elapsedTime}</div>
+              <strong>{notification.title}</strong>
+              <div>{notification.body}</div>
+              <div style={{ color: notification.isExpired ? 'red' : '#0766FF' }}>{notification.isExpired ? 'Expired' : notification.elapsedTime}</div>
             </div>
-            <button onClick={() => removeNotification(notification.id)}>
-              Delete
-            </button>
           </li>
         ))}
       </ul>
