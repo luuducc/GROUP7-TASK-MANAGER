@@ -184,6 +184,7 @@ const Workspace = ({ displayToast }) => {
           token: `Bearer ${token}`
         }
       });
+
       if (updatedCompletedStatus) {
         // toast.success('Congratulation, you have done your job!');
         displayToast('Congratulation, you have done your job!', true)
@@ -207,7 +208,7 @@ const Workspace = ({ displayToast }) => {
 
   return (
     <div className="task-list-container">
-      <h2>Task List</h2>
+      <h2>Work space</h2>
       <div className='search-task'>
         <button
           style={{
