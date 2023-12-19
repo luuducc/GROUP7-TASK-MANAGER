@@ -23,7 +23,7 @@ router.route("/:taskId/user/:id")
   .delete(verifyTokenAndUser, deleteTask);
 
 // ADMIN HERE!!
-router.route('/admin') // id ở đây là userId
+router.route('/admin') 
   .post(verifyTokenAndAdmin, getUserByEmail, createTaskForAdmin)
   .get(verifyToken, getAllWorkspaceTasks) // both user and admin can do
   .delete(verifyTokenAndAdmin, deleteAllTaskForAdmin) // no need user id
