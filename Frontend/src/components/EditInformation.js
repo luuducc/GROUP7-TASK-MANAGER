@@ -98,7 +98,11 @@ const EditInformation = ({ onClose, displayToast }) => {
                         >
                             <Button
                                 colorScheme="blue"
-                                onClick={handleSaveChanges}                              
+                                onClick={handleSaveChanges}
+                                _hover={{
+                                    backgroundColor: 'blue',
+                                    color: 'white',
+                                  }}                           
                                 >
                                 Save Changes
                             </Button>

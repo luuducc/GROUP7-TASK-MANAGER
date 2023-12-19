@@ -83,6 +83,10 @@ const Profile = ({displayToast}) => {
         <Button 
           colorScheme='blue'
           onClick={handleEditClick}
+          _hover={{
+            backgroundColor: 'blue',
+            color: 'white',
+          }}
         >
           Edit Information
         </Button>
@@ -96,6 +100,11 @@ const Profile = ({displayToast}) => {
           <Button
             colorScheme='red'
             onClick={handleDeleteClick}
+            backgroundColor="red.500"
+            _hover={{
+              backgroundColor: 'red.500',
+              color: 'white',
+            }}
           >
             Delete Account
           </Button>
@@ -109,6 +118,10 @@ const Profile = ({displayToast}) => {
           <Button
             colorScheme='blue'
             onClick={handleLogout}
+            _hover={{
+              backgroundColor: 'blue',
+              color: 'white',
+            }}
           >
             Logout
           </Button>

@@ -50,10 +50,6 @@ body {
     line-height: 30px;
 }
 
-Button:hover {
-    color: white;
-}
-
 Box {
     margin-top: 10px;
 }

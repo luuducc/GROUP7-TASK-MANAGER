@@ -34,7 +34,7 @@ const setupCronJob = (clientId, userId) => {
                   sendSSEMessage(clientId, {
                     name: task.title,
                     daysUntilExpiration,
-                    message: `the time left is ${daysUntilExpiration} day`
+                    message: `the time left is ${Math.ceil(daysUntilExpiration)} day`
                   })
                 }
                 break
@@ -43,7 +43,7 @@ const setupCronJob = (clientId, userId) => {
                   sendSSEMessage(clientId, {
                     name: task.title,
                     hoursUntilExpiration,
-                    message: `the time left is ${hoursUntilExpiration} hours`
+                    message: `the time left is ${Math.ceil(hoursUntilExpiration)} hours`
                   })
                 }
                 break
@@ -52,7 +52,7 @@ const setupCronJob = (clientId, userId) => {
                   sendSSEMessage(clientId, {
                     name: task.title,
                     minutesUntilExpiration,
-                    message: `the time left is ${minutesUntilExpiration} minute`
+                    message: `the time left is ${Math.ceil(minutesUntilExpiration)} minute`
                   })
                 }
                 break
