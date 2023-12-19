@@ -4,6 +4,7 @@ import './Notification.css';
 
 const Notification = () => {
   const [notifications, setNotifications] = useState([]);
+  const userId = localStorage.getItem('userId');
 
   const addNotification = (message, name) => {
     const newNotification = {
@@ -17,7 +18,7 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    const eventSource = new EventSource("http://localhost:3000/events");
+    const eventSource = new EventSource(`http://localhost:3000/events/${userId}`);
 
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -36,11 +37,6 @@ const Notification = () => {
     return () => {
       eventSource.close();
     };
-  }, []);
-
-  useEffect(() => {
-    // Gọi hàm addNotification khi component được render để thêm thông báo mặc định
-    addNotification('This is a permanent notification', 'Default Name');
   }, []);
 
   const removeNotification = (id) => {
