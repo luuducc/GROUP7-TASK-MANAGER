@@ -41,6 +41,7 @@ const Header = () => {
       toast.error(message)
     }
   }
+
   return (
     <Tabs variant='enclosed' align='center' margin={0}>
       <TabList
@@ -52,7 +53,7 @@ const Header = () => {
         <Tab {...tabHoverStyle}>My Todolist</Tab>
         <Tab {...tabHoverStyle}>Workspace</Tab>
         <Tab {...tabHoverStyle}>Notification</Tab>
-        <Tab {...tabHoverStyle}>Profile</Tab>
+        <Tab {...tabHoverStyle}>{`Hi, ${localStorage.getItem('userName')}`}</Tab>
       </TabList>
       <TabPanels align='start'>
         <TabPanel>

@@ -81,10 +81,18 @@ const DeleteAccount = ({ onClose, displayToast }) => {
               </InputRightElement>
             </InputGroup>
             <Flex justifyContent="space-around" mt={4}>
-              <Button colorScheme="red" onClick={handleConfirmDelete} marginRight="10px">
+              <Button colorScheme="red" 
+              _hover={{
+              backgroundColor: 'red.500',
+              color: 'white',
+            }} onClick={handleConfirmDelete} marginRight="10px">
                 Yes, Delete Account
               </Button>
-              <Button colorScheme="blue" onClick={onClose}>
+              <Button colorScheme="blue"
+              _hover={{
+                backgroundColor: 'blue',
+                color: 'white',
+              }} onClick={onClose}>
                 Cancel
               </Button>
             </Flex>

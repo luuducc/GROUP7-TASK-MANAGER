@@ -1,6 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import './Notification.css';
+import { v4 as uuidv4 } from 'uuid';
 
 const Notification = () => {
   const [notifications, setNotifications] = useState([]);
@@ -8,7 +8,7 @@ const Notification = () => {
 
   const addNotification = (message, name) => {
     const newNotification = {
-      id: Date.now(),
+      id: uuidv4(),
       message,
       name,
       timestamp: new Date().toLocaleString(),
@@ -39,8 +39,13 @@ const Notification = () => {
     };
   }, []);
 
+  // useEffect(() => {
+  //   // Gọi hàm addNotification khi component được render để thêm thông báo mặc định
+  //   addNotification('This is a permanent notification', 'Default Name');
+  // }, []);
+
   const removeNotification = (id) => {
-    // xoá thông báo
+    // Remove the notification
     setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== id));
   };
 
@@ -54,7 +59,7 @@ const Notification = () => {
               <strong className='name'>{notification.name}</strong>
               <div className='content'>
                 <p>{notification.message}</p>
-                <div>{(notification.timestamp)}</div>
+                <div>{notification.timestamp}</div>
               </div>
             </div>
             <div className='Delete'>

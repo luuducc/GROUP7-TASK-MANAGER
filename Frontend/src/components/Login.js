@@ -22,6 +22,8 @@ const Login = () => {
       // console.log(userData)
       localStorage.setItem('isAdmin', userData.isAdmin);
       localStorage.setItem('userEmail', userData.email);
+      localStorage.setItem('userName', userData.username);
+      console.log('name: ', userData.username);
 
       console.log('token: ', localStorage.getItem('token'));
       console.log('userId: ', localStorage.getItem('userId'));
