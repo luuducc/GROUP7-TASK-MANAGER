@@ -25,7 +25,7 @@ const userController = {
 
   //GET USER BY EMAIL
   getUserByEmail: async (req, res, next) => {
-    console.log("check email " + req.body)
+    console.log("check email " + req.body.email)
     try {
       if (req.body.email) {
         const user = await User.find({ email: req.body.email }); // return an array

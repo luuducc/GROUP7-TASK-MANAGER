@@ -38,30 +38,48 @@ exports.getTaskByTitle = async (title) => {
     .populate({ path: 'user', select: 'username'})
 };
 
-exports.updateTask = async (taskId, task) => {
-  const findTask = await TaskModel.findById(taskId)
+const regex = /"([^"]*)"/; // to extract the id in ObjectId
+
+exports.updateTask = async (taskId, userRequestId, task) => {
+  const findTask = await TaskModel.findById(taskId).populate('user')
+  const userOwnTaskId = JSON.stringify(findTask.user._id)
+  const userOwnTaskIdString = userOwnTaskId.match(regex)[1]
+
+  // console.log(userOwnTaskIdString, userRequestId)
+
   if(findTask) { // if task exist
-    if(findTask.inWorkspace === true) { // if task in workspace
-      // user can only edit 'completed' with task in workspace
-      const jsonTask = JSON.stringify(task) // convert object to string to compare
-      if(jsonTask === '{"completed":true}' || jsonTask === '{"completed":false}') {
-        // only accept changing 'completed' property
-        const {completed} = task
-        return await TaskModel.findByIdAndUpdate(taskId, {completed}, {new: true})
-      } else { 
-        return {
-          errorCode: true,
-          msg: "You can only change 'completed' property in workspace!"
+
+    if(userOwnTaskIdString === userRequestId) { // if task of user
+
+      if(findTask.inWorkspace === true) { // if task in workspace
+        const jsonTask = JSON.stringify(task) // convert object to string to compare
+
+        // user can only edit 'completed' with task in workspace
+        if(jsonTask === '{"completed":true}' || jsonTask === '{"completed":false}') {
+          // only accept changing 'completed' property
+          const {completed} = task
+          return await TaskModel.findByIdAndUpdate(taskId, {completed}, {new: true})
+        } else { 
+          return {
+            errorCode: true,
+            msg: "You can only change 'completed' property in workspace!"
+          }
         }
+        
+      } else { // if task in tasklist
+        return await TaskModel.findByIdAndUpdate(taskId, task, {
+          new: true, // return the new item
+          // runValidators: true // gặp lỗi, khi this lúc nhận từ update, khác this lúc nhận từ create, nên chạy validate lại bị sai
+        })
+          .populate({ path: 'user', select: 'username'});
       }
-      
-    } else { // if task of user
-      return await TaskModel.findByIdAndUpdate(taskId, task, {
-        new: true, // return the new item
-        // runValidators: true // gặp lỗi, khi this lúc nhận từ update, khác this lúc nhận từ create, nên chạy validate lại bị sai
-      })
-        .populate({ path: 'user', select: 'username'});
+    } else { // if task not of user
+      return {
+        errorCode: true,
+        msg: 'You do not own this task!'
+      }
     }
+    
     
   } else { // task dont exist
     return {
