@@ -89,6 +89,16 @@ const Todolist = () => {
     <div className="todo-list-container">
       <h2>Todo List</h2>
       <div className='todo-list'>
+        
+        <input
+          type="text"
+          placeholder="Add todo"
+          value={newTodo.title}
+          style={{
+            margin: '0 5px 0 0',
+          }}
+          onChange={(e) => setNewTodo({ ...newTodo, title: e.target.value })}
+        />
         <button 
           onClick={handleAddTodo}
           style={{
@@ -100,15 +110,6 @@ const Todolist = () => {
         >
           Add
         </button>
-        <input
-          type="text"
-          placeholder="Add todo"
-          value={newTodo.title}
-          style={{
-            margin: '0 0 0 5px',
-          }}
-          onChange={(e) => setNewTodo({ ...newTodo, title: e.target.value })}
-        />
       </div>
       <ul className='todo-ul'>
         {todoList.map((todo) => (
