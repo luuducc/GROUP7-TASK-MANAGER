@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Workspace.css';
-import AddTaskForm from './AddTaskForm';
+import AddTaskWorkspace from './AddTaskWorkspace';
 import EditTaskForm from './EditTaskForm';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -72,19 +72,14 @@ const Workspace = ({ displayToast }) => {
         // toast.error('The value must be positive')
         displayToast('The value must be positive', false);
         return
-      } else {
-        // if(newTask.customNoti.time === 'minute' && newTask.customNoti.value < 5) {
-        //   toast.error('The minium time must be 5 minute')
-        //   return 
-        // }
       }
-      const response = await axios.post(`http://localhost:3000/api/tasks/admin`, { ...newTask, email: localStorage.getItem('userEmail') }, {
+      const response = await axios.post(`http://localhost:3000/api/tasks/admin`, { ...newTask }, {
         headers: {
           token: `Bearer ${token}`
         }
       });
       setTasks([response.data.data, ...tasks]);
-      setNewTask({ title: '', body: '', image: '', expiredDate: '', customNoti: { value: undefined, time: 'day' } });
+      setNewTask({email: '', title: '', body: '', image: '', expiredDate: '', customNoti: { value: undefined, time: 'day' } });
       setAddPopupOpen(false);
 
       // toast.success('Task added successfully!');
@@ -254,6 +249,7 @@ const Workspace = ({ displayToast }) => {
       <ul className="task-list">
         {displayedTasks.map((task) => (
           <li key={task._id} className="task-item">
+            <u><strong>{task.user.username}</strong></u>
             <strong>{task.title}</strong>
             <h1>{task.body}</h1>
             <p>expiredDate: {new Date(task.expiredDate).toLocaleString()}</p>
@@ -303,7 +299,7 @@ const Workspace = ({ displayToast }) => {
 
       {/* Add Task Form */}
       {isAddPopupOpen && (
-        <AddTaskForm
+        <AddTaskWorkspace
           newTask={newTask}
           setNewTask={setNewTask}
           handleAddTask={handleAddTask}
