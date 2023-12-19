@@ -225,7 +225,7 @@ const Workspace = ({ displayToast }) => {
 
   return (
     <div className="task-list-container">
-      <h2>Work space</h2>
+      <h2>Workspace</h2>
       <div className='search-task'>
         <button
           style={{

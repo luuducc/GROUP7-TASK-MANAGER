@@ -18,7 +18,7 @@ app.use(cors());
 //middleware
 app.use(express.json()); 
 app.use(express.static('./public'))
-  
+
 //Routes
 app.use("/api/tasks", taskRouter); 
 app.use("/todo", todoListRouter);
